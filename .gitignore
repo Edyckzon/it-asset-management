@@ -42,4 +42,5 @@ testem.log
 Thumbs.db
 
 
-src/environments/environment.ts
+# Ocultar secretos de Angular
+src/environments/*

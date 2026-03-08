@@ -25,7 +25,7 @@
         >
           <option value="">Selecciona un área</option>
           @for (area of areas(); track area.id) {
-          <option value="{{ area.id }}">{{ area.nombre }}</option>
+            <option value="{{ area.id }}">{{ area.nombre }}</option>
           }
         </select>
       </div>
@@ -54,43 +54,98 @@
   </div>
 
   @if (isLoading()) {
-  <div class="py-6 text-center text-gray-500">Cargando empleados...</div>
+    <div class="py-6 text-center text-gray-500">Cargando empleados...</div>
   } @else {
-  <div class="overflow-x-auto bg-white rounded-lg shadow-sm">
-    <table class="min-w-full text-left">
-      <thead class="bg-gray-50">
-        <tr>
-          <th class="px-4 py-3 text-sm font-medium text-gray-600">Nombre</th>
-          <th class="px-4 py-3 text-sm font-medium text-gray-600">Área</th>
-          <th class="px-4 py-3 text-sm font-medium text-gray-600">Cargo</th>
-          <th class="px-4 py-3 text-sm font-medium text-gray-600">Estado</th>
-          <th class="px-4 py-3 text-sm font-medium text-gray-600">Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (emp of empleados(); track emp.id) {
-        <tr class="border-t hover:bg-gray-50">
-          <td class="px-4 py-3 text-sm text-gray-700">
-            {{ emp.nombre_completo }}
-          </td>
-          <td class="px-4 py-3 text-sm text-gray-700">
-            {{ emp.areas?.nombre || "-" }}
-          </td>
-          <td class="px-4 py-3 text-sm text-gray-700">{{ emp.cargo }}</td>
-          <td class="px-4 py-3 text-sm text-gray-700">
-            {{ emp.estado ? "Activo" : "Inactivo" }}
-          </td>
-          <td class="px-4 py-3 text-sm text-gray-700">
-            <button (click)="onDelete(emp)" title="Eliminar" class="text-red-600 hover:text-red-800 inline-flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H3a1 1 0 000 2h14a1 1 0 100-2h-2V3a1 1 0 00-1-1H6zm2 5a1 1 0 012 0v6a1 1 0 11-2 0V7zm4 0a1 1 0 10-2 0v6a1 1 0 102 0V7z" clip-rule="evenodd" />
-              </svg>
-            </button>
-          </td>
-        </tr>
-        }
-      </tbody>
-    </table>
-  </div>
+    
+    <div class="flex justify-end gap-3 mb-3">
+      <button (click)="exportarExcel()" class="inline-flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-700 border border-green-200 rounded hover:bg-green-100 transition-colors text-sm font-medium shadow-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+        Excel
+      </button>
+      
+      <button (click)="exportarPdf()" class="inline-flex items-center gap-2 px-3 py-1.5 bg-red-50 text-red-700 border border-red-200 rounded hover:bg-red-100 transition-colors text-sm font-medium shadow-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+        </svg>
+        PDF
+      </button>
+    </div>
+
+    <div class="overflow-hidden bg-white rounded-lg shadow-sm border border-gray-200">
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-left">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-4 py-3 text-sm font-medium text-gray-600">Nombre</th>
+              <th class="px-4 py-3 text-sm font-medium text-gray-600">Área</th>
+              <th class="px-4 py-3 text-sm font-medium text-gray-600">Cargo</th>
+              <th class="px-4 py-3 text-sm font-medium text-gray-600">Estado</th>
+              <th class="px-4 py-3 text-sm font-medium text-gray-600 text-center">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (emp of paginatedEmpleados(); track emp.id) {
+              <tr class="border-t hover:bg-gray-50">
+                <td class="px-4 py-3 text-sm text-gray-700">{{ emp.nombre_completo }}</td>
+                <td class="px-4 py-3 text-sm text-gray-700">{{ emp.areas?.nombre || "-" }}</td>
+                <td class="px-4 py-3 text-sm text-gray-700">{{ emp.cargo }}</td>
+                <td class="px-4 py-3 text-sm text-gray-700">
+                  <span
+                    [class]="
+                      emp.estado
+                        ? 'px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800'
+                        : 'px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800'
+                    "
+                  >
+                    {{ emp.estado ? "Activo" : "Inactivo" }}
+                  </span>
+                </td>
+                <td class="px-4 py-3 text-sm text-gray-700 text-center">
+                  <button
+                    (click)="onDelete(emp)"
+                    title="Eliminar"
+                    class="text-red-600 hover:text-red-800 inline-flex items-center transition-colors"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H3a1 1 0 000 2h14a1 1 0 100-2h-2V3a1 1 0 00-1-1H6zm2 5a1 1 0 012 0v6a1 1 0 11-2 0V7zm4 0a1 1 0 10-2 0v6a1 1 0 102 0V7z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <div class="flex items-center justify-between px-4 py-3 border-t border-gray-200 bg-gray-50 sm:px-6">
+        <div class="hidden sm:block">
+          <p class="text-sm text-gray-700">
+            Mostrando página
+            <span class="font-medium">{{ currentPage() }}</span> de
+            <span class="font-medium">{{ totalPages() || 1 }}</span>
+            (Total:
+            <span class="font-medium">{{ empleados().length }}</span> empleados)
+          </p>
+        </div>
+        <div class="flex justify-between flex-1 sm:justify-end gap-2">
+          <button
+            (click)="prevPage()"
+            [disabled]="currentPage() === 1"
+            class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Anterior
+          </button>
+          <button
+            (click)="nextPage()"
+            [disabled]="currentPage() >= totalPages() || totalPages() === 0"
+            class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-brand-500 border border-transparent rounded-md hover:bg-brand-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-brand-500"
+          >
+            Siguiente
+          </button>
+        </div>
+      </div>
+    </div>
   }
 </div>

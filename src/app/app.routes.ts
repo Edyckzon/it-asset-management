@@ -1,12 +1,24 @@
 import { Routes } from "@angular/router";
 import { EcommerceComponent } from "./pages/dashboard/ecommerce/ecommerce.component";
+import { AppLayoutComponent } from "./shared/layout/app-layout/app-layout.component";
+import { authGuard } from "./shared/guards/auth.guard";
+import { SignInComponent } from "./pages/auth-pages/sign-in/sign-in.component";
+import { NotFoundComponent } from "./pages/other-page/not-found/not-found.component";
+
+// Importaciones de tus módulos del ERP
+import { AreasComponent } from "./pages/rrhh/areas/areas.component";
+import { EmpleadosComponent } from "./pages/rrhh/empleados/empleados.component";
+import { CredencialesComponent } from "./pages/rrhh/credenciales/credenciales.component";
+import { ComprasHardwareComponent } from "./pages/inventario/compras/compras-hardware.component";
+import { ActivosComponent } from "./pages/inventario/activos/activos.component";
+import { HistorialComponent } from "./pages/inventario/historial/historial.component";
+import { AsignacionesComponent } from "./pages/inventario/asignaciones/asignaciones.component";
+
+/* === IMPORTACIONES COMENTADAS DE LA PLANTILLA ===
 import { ProfileComponent } from "./pages/profile/profile.component";
 import { FormElementsComponent } from "./pages/forms/form-elements/form-elements.component";
 import { BasicTablesComponent } from "./pages/tables/basic-tables/basic-tables.component";
 import { BlankComponent } from "./pages/blank/blank.component";
-import { NotFoundComponent } from "./pages/other-page/not-found/not-found.component";
-import { AppLayoutComponent } from "./shared/layout/app-layout/app-layout.component";
-import { authGuard } from "./shared/guards/auth.guard";
 import { InvoicesComponent } from "./pages/invoices/invoices.component";
 import { LineChartComponent } from "./pages/charts/line-chart/line-chart.component";
 import { BarChartComponent } from "./pages/charts/bar-chart/bar-chart.component";
@@ -16,17 +28,9 @@ import { BadgesComponent } from "./pages/ui-elements/badges/badges.component";
 import { ButtonsComponent } from "./pages/ui-elements/buttons/buttons.component";
 import { ImagesComponent } from "./pages/ui-elements/images/images.component";
 import { VideosComponent } from "./pages/ui-elements/videos/videos.component";
-import { SignInComponent } from "./pages/auth-pages/sign-in/sign-in.component";
 import { SignUpComponent } from "./pages/auth-pages/sign-up/sign-up.component";
 import { CalenderComponent } from "./pages/calender/calender.component";
-
-// Importaciones de tus nuevos módulos
-import { AreasComponent } from "./pages/rrhh/areas/areas.component";
-import { EmpleadosComponent } from "./pages/rrhh/empleados/empleados.component";
-import { CredencialesComponent } from "./pages/rrhh/credenciales/credenciales.component";
-import { ComprasHardwareComponent } from "./pages/inventario/compras/compras-hardware.component";
-import { ActivosComponent } from "./pages/inventario/activos/activos.component";
-import { HistorialComponent } from "./pages/inventario/historial/historial.component";
+================================================== */
 
 export const routes: Routes = [
   {
@@ -70,99 +74,53 @@ export const routes: Routes = [
         title: "Inventario - Activos TI",
       },
       {
-        path: "inventario/historial", // <-- ¡AGREGA ESTO!
+        path: "inventario/asignaciones",
+        component: AsignacionesComponent,
+        title: "Inventario - Asignaciones",
+      },
+      {
+        path: "inventario/historial",
         component: HistorialComponent,
         title: "Inventario - Historial de Movimientos",
       },
 
-      // --- PÁGINAS DE LA PLANTILLA ---
-      {
-        path: "calendar",
-        component: CalenderComponent,
-        title: "Angular Calender | TailAdmin",
-      },
-      {
-        path: "profile",
-        component: ProfileComponent,
-        title: "Angular Profile | TailAdmin",
-      },
-      {
-        path: "form-elements",
-        component: FormElementsComponent,
-        title: "Angular Form Elements | TailAdmin",
-      },
-      {
-        path: "basic-tables",
-        component: BasicTablesComponent,
-        title: "Angular Basic Tables | TailAdmin",
-      },
-      {
-        path: "invoice",
-        component: InvoicesComponent,
-        title: "Angular Invoice | TailAdmin",
-      },
-      {
-        path: "line-chart",
-        component: LineChartComponent,
-        title: "Angular Line Chart | TailAdmin",
-      },
-      {
-        path: "bar-chart",
-        component: BarChartComponent,
-        title: "Angular Bar Chart | TailAdmin",
-      },
-      {
-        path: "alerts",
-        component: AlertsComponent,
-        title: "Angular Alerts | TailAdmin",
-      },
-      {
-        path: "avatars",
-        component: AvatarElementComponent,
-        title: "Angular Avatars | TailAdmin",
-      },
-      {
-        path: "badge",
-        component: BadgesComponent,
-        title: "Angular Badges | TailAdmin",
-      },
-      {
-        path: "buttons",
-        component: ButtonsComponent,
-        title: "Angular Buttons | TailAdmin",
-      },
-      {
-        path: "images",
-        component: ImagesComponent,
-        title: "Angular Images | TailAdmin",
-      },
-      {
-        path: "videos",
-        component: VideosComponent,
-        title: "Angular Videos | TailAdmin",
-      },
-      {
-        path: "blank",
-        component: BlankComponent,
-        title: "Angular Blank | TailAdmin",
-      },
+      /* === RUTAS DE LA PLANTILLA COMENTADAS ===
+      { path: "calendar", component: CalenderComponent, title: "Calendar" },
+      { path: "profile", component: ProfileComponent, title: "Profile" },
+      { path: "form-elements", component: FormElementsComponent, title: "Form Elements" },
+      { path: "basic-tables", component: BasicTablesComponent, title: "Basic Tables" },
+      { path: "invoice", component: InvoicesComponent, title: "Invoice" },
+      { path: "line-chart", component: LineChartComponent, title: "Line Chart" },
+      { path: "bar-chart", component: BarChartComponent, title: "Bar Chart" },
+      { path: "alerts", component: AlertsComponent, title: "Alerts" },
+      { path: "avatars", component: AvatarElementComponent, title: "Avatars" },
+      { path: "badge", component: BadgesComponent, title: "Badges" },
+      { path: "buttons", component: ButtonsComponent, title: "Buttons" },
+      { path: "images", component: ImagesComponent, title: "Images" },
+      { path: "videos", component: VideosComponent, title: "Videos" },
+      { path: "blank", component: BlankComponent, title: "Blank Page" },
+      ============================================ */
     ],
   },
-  // Auth pages
+
+  // Rutas Públicas (Auth)
   {
     path: "signin",
     component: SignInComponent,
-    title: "Sign In | TailAdmin",
+    title: "Sign In | One Secure Zone",
   },
+  /* === SIGNUP COMENTADO ===
   {
     path: "signup",
     component: SignUpComponent,
     title: "Sign Up | TailAdmin",
   },
-  // Error pages
+  =========================== */
+
+  // Página de Error 404 (Si escriben cualquier otra ruta, caen aquí)
   {
     path: "**",
     component: NotFoundComponent,
-    title: "404 Not Found | TailAdmin",
+    title: "Página no encontrada",
   },
 ];

@@ -10,14 +10,17 @@ export interface CompraHardware {
 
 export interface ActivoTI {
   id: string;
-  compra_id: string;
   codigo_inventario: string;
   tipo_activo: string;
-  marca_modelo: string;
-  numero_serie: string;
-  nombre_pc: string;
-  direccion_mac: string;
-  direccion_ip: string;
-  estado: string; // e.g. 'Disponible' | 'Asignado'
+  marca_modelo?: string;
+  numero_serie?: string;
+  nombre_pc?: string;
+  direccion_mac?: string;
+  direccion_ip?: string;
+  estado: string;
   empleado_id?: string | null;
+  compra_id?: string | null;
+
+  // 🔥 AGREGA ESTA LÍNEA AQUÍ:
+  empleados?: { nombre_completo: string } | null;
 }
