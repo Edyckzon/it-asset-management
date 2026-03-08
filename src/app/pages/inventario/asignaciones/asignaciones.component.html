@@ -1,17 +1,16 @@
 <div class="max-w-6xl mx-auto p-4">
-  <h2 class="text-xl font-bold mb-6 text-gray-800">Control de Asignaciones de Hardware</h2>
-
-  <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-gray-100">
-    <h3 class="text-md font-semibold mb-4 text-brand-600 border-b pb-2">
+  
+  <div class="bg-white dark:bg-gray-900 rounded-xl shadow-theme-sm border border-gray-200 dark:border-gray-800 p-5 mb-6">
+    <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">
       Registrar Nueva Entrega de Equipo
     </h3>
     
     <form [formGroup]="asignacionForm" (ngSubmit)="onSubmit()" class="grid grid-cols-1 md:grid-cols-3 gap-4">
       
       <div>
-        <label class="block text-sm font-medium text-gray-600 mb-1">Empleado (Receptor)</label>
-        <select formControlName="empleado_id" class="w-full rounded-md border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500 sm:text-sm border p-2">
-          <option value="">-- Seleccionar Empleado --</option>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Empleado (Receptor)</label>
+        <select formControlName="empleado_id" class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent dark:border-gray-700 dark:bg-gray-800 dark:text-white transition-all">
+          <option value="" disabled selected>-- Seleccionar Empleado --</option>
           @for (emp of empleados(); track emp.id) {
             <option [value]="emp.id">{{ emp.nombre_completo }}</option>
           }
@@ -19,9 +18,9 @@
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-600 mb-1">Equipo Disponible</label>
-        <select formControlName="activo_id" class="w-full rounded-md border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500 sm:text-sm border p-2">
-          <option value="">-- Seleccionar Equipo en Almacén --</option>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Equipo Disponible</label>
+        <select formControlName="activo_id" class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent dark:border-gray-700 dark:bg-gray-800 dark:text-white transition-all">
+          <option value="" disabled selected>-- Seleccionar Equipo en Almacén --</option>
           @for (activo of activosDisponibles(); track activo.id) {
             <option [value]="activo.id">
               {{ activo.codigo_inventario }} - {{ activo.tipo_activo }} ({{ activo.marca_modelo || 'Genérico' }})
@@ -31,33 +30,41 @@
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-600 mb-1">Notas de Entrega (Opcional)</label>
-        <input formControlName="notas" placeholder="Ej: Se entrega con cargador y funda..." class="w-full rounded-md border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500 sm:text-sm border p-2"/>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Notas de Entrega (Opcional)</label>
+        <input formControlName="notas" placeholder="Ej: Se entrega con cargador y funda..." class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent dark:border-gray-700 dark:bg-gray-800 dark:text-white transition-all"/>
       </div>
 
-      <div class="md:col-span-3 text-right mt-2">
-        <button type="submit" [disabled]="isLoading() || activosDisponibles().length === 0" class="bg-brand-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-brand-700 transition-colors shadow-sm disabled:opacity-50">
+      <div class="md:col-span-3 flex flex-col md:flex-row md:items-center md:justify-end gap-3 mt-2">
+        @if (activosDisponibles().length === 0 && !isLoading()) {
+          <p class="text-sm font-medium text-error-500 flex items-center gap-1.5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+            No hay equipos en almacén.
+          </p>
+        }
+        <button type="submit" [disabled]="isLoading() || activosDisponibles().length === 0" class="inline-flex items-center justify-center gap-2 px-6 py-2.5 text-sm font-medium text-white bg-brand-500 rounded-lg hover:bg-brand-600 disabled:opacity-50 transition-colors shadow-sm w-full md:w-auto">
+          @if (isLoading()) {
+            <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+          } @else {
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" /></svg>
+          }
           {{ isLoading() ? "Procesando..." : "Asignar Equipo" }}
         </button>
-        @if (activosDisponibles().length === 0 && !isLoading()) {
-          <p class="text-xs text-red-500 mt-2">No hay equipos disponibles en almacén para asignar.</p>
-        }
       </div>
     </form>
   </div>
 
   @if (isLoading() && asignaciones().length === 0) {
-    <div class="p-8 text-center text-gray-500">Cargando actas de asignación...</div>
+    <div class="py-10 text-center text-gray-500 dark:text-gray-400">Cargando actas de asignación...</div>
   } @else {
     
     <div class="flex justify-end gap-3 mb-4">
-      <button (click)="exportarExcel()" [disabled]="asignaciones().length === 0" class="inline-flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-700 border border-green-200 rounded hover:bg-green-100 transition-colors text-sm font-medium shadow-sm disabled:opacity-50">
+      <button (click)="exportarExcel()" [disabled]="asignaciones().length === 0" class="inline-flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-700 hover:bg-green-100 rounded-md transition-colors text-sm font-medium disabled:opacity-50">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
         </svg>
         Excel
       </button>
-      <button (click)="exportarPdf()" [disabled]="asignaciones().length === 0" class="inline-flex items-center gap-2 px-3 py-1.5 bg-red-50 text-red-700 border border-red-200 rounded hover:bg-red-100 transition-colors text-sm font-medium shadow-sm disabled:opacity-50">
+      <button (click)="exportarPdf()" [disabled]="asignaciones().length === 0" class="inline-flex items-center gap-2 px-3 py-1.5 bg-red-50 text-red-700 hover:bg-red-100 rounded-md transition-colors text-sm font-medium disabled:opacity-50">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
         </svg>
@@ -65,36 +72,41 @@
       </button>
     </div>
 
-    <div class="overflow-hidden bg-white rounded-xl shadow-sm border border-gray-100">
+    <div class="overflow-hidden bg-white dark:bg-gray-900 rounded-xl shadow-theme-sm border border-gray-200 dark:border-gray-800">
       <div class="overflow-x-auto">
         <table class="min-w-full text-left border-collapse">
-          <thead class="bg-gray-50 border-b border-gray-100">
+          <thead class="bg-gray-50 dark:bg-gray-800/50">
             <tr>
-              <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Fecha Entrega</th>
-              <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Empleado</th>
-              <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Equipo</th>
-              <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Notas</th>
-              <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider text-center">Acciones</th>
+              <th class="px-5 py-4 text-xs font-bold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Fecha Entrega</th>
+              <th class="px-5 py-4 text-xs font-bold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Empleado</th>
+              <th class="px-5 py-4 text-xs font-bold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Equipo</th>
+              <th class="px-5 py-4 text-xs font-bold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Notas</th>
+              <th class="px-5 py-4 text-xs font-bold text-gray-600 dark:text-gray-300 uppercase tracking-wider text-center">Acciones</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-gray-100">
+          <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
             @for (a of paginatedAsignaciones(); track a.id) {
-              <tr class="hover:bg-blue-50/30 transition-colors">
-                <td class="px-6 py-4 text-sm text-gray-600 font-medium">
-                  {{ a.fecha_asignacion | date: 'shortDate' }}
+              <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition">
+                <td class="px-5 py-4 text-sm text-gray-500 dark:text-gray-400 font-medium">
+                  {{ a.fecha_asignacion | date: 'dd/MM/yyyy' }}
                 </td>
-                <td class="px-6 py-4 text-sm font-bold text-gray-800">
-                  {{ a.empleados?.nombre_completo || 'Desconocido' }}
+                <td class="px-5 py-4 text-sm font-semibold text-gray-800 dark:text-gray-200">
+                  <div class="flex items-center gap-3">
+                    <div class="h-8 w-8 rounded-full bg-brand-100 text-brand-600 flex items-center justify-center text-xs font-bold dark:bg-brand-900/30 dark:text-brand-400">
+                      {{ (a.empleados?.nombre_completo || 'D').substring(0, 2).toUpperCase() }}
+                    </div>
+                    <span>{{ a.empleados?.nombre_completo || 'Desconocido' }}</span>
+                  </div>
                 </td>
-                <td class="px-6 py-4">
-                  <div class="font-bold text-brand-600">{{ a.activos_ti?.codigo_inventario }}</div>
-                  <div class="text-xs text-gray-500">{{ a.activos_ti?.tipo_activo }} ({{ a.activos_ti?.marca_modelo || 'N/A' }})</div>
+                <td class="px-5 py-4">
+                  <div class="font-bold text-brand-600 dark:text-brand-400">{{ a.activos_ti?.codigo_inventario }}</div>
+                  <div class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ a.activos_ti?.tipo_activo }} ({{ a.activos_ti?.marca_modelo || 'N/A' }})</div>
                 </td>
-                <td class="px-6 py-4 text-xs text-gray-500 max-w-xs truncate" [title]="a.notas">
-                  {{ a.notas || '-' }}
+                <td class="px-5 py-4 text-xs text-gray-500 dark:text-gray-400 max-w-xs truncate" [title]="a.notas">
+                  {{ a.notas || 'Sin notas adicionales' }}
                 </td>
-                <td class="px-6 py-4 text-center">
-                  <button (click)="devolverEquipo(a)" class="inline-flex items-center gap-1 px-3 py-1.5 bg-yellow-50 text-yellow-700 border border-yellow-200 rounded hover:bg-yellow-100 transition-colors text-xs font-semibold shadow-sm">
+                <td class="px-5 py-4 text-center">
+                  <button (click)="devolverEquipo(a)" class="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 bg-warning-50 text-warning-700 border border-warning-200 rounded-md hover:bg-warning-100 transition-colors text-xs font-semibold shadow-sm dark:bg-warning-500/10 dark:text-warning-400 dark:border-warning-500/20 dark:hover:bg-warning-500/20">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
                     </svg>
@@ -102,22 +114,30 @@
                   </button>
                 </td>
               </tr>
+            } @empty {
+              <tr>
+                <td colspan="5" class="px-5 py-8 text-center text-sm text-gray-500 dark:text-gray-400">
+                  No hay asignaciones registradas actualmente.
+                </td>
+              </tr>
             }
           </tbody>
         </table>
       </div>
 
-      <div class="flex items-center justify-between px-6 py-4 border-t border-gray-100 bg-gray-50">
-        <div class="hidden sm:block">
-          <p class="text-sm text-gray-600">
-            Página <span class="font-bold text-gray-800">{{ currentPage() }}</span> de <span class="font-bold text-gray-800">{{ totalPages() || 1 }}</span>
-            <span class="text-gray-400 mx-2">|</span>
-            Equipos en uso: <span class="font-bold text-brand-600">{{ asignaciones().length }}</span>
-          </p>
-        </div>
+      <div class="flex items-center justify-between px-5 py-3 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
+        <p class="text-sm text-gray-500 dark:text-gray-400">
+          Página <span class="font-medium">{{ currentPage() }}</span> de <span class="font-medium">{{ totalPages() || 1 }}</span>
+          <span class="mx-2 text-gray-300 dark:text-gray-600">|</span>
+          Equipos en uso: <span class="font-medium text-brand-600 dark:text-brand-400">{{ asignaciones().length }}</span>
+        </p>
         <div class="flex gap-2">
-          <button (click)="prevPage()" [disabled]="currentPage() === 1" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm transition-all">Anterior</button>
-          <button (click)="nextPage()" [disabled]="currentPage() >= totalPages() || totalPages() === 0" class="px-4 py-2 text-sm font-medium text-white bg-brand-500 border border-transparent rounded-md hover:bg-brand-600 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm transition-all">Siguiente</button>
+          <button (click)="prevPage()" [disabled]="currentPage() === 1" class="px-3 py-1.5 text-sm font-medium border border-gray-200 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800 transition">
+            Anterior
+          </button>
+          <button (click)="nextPage()" [disabled]="currentPage() >= totalPages() || totalPages() === 0" class="px-3 py-1.5 text-sm font-medium border border-gray-200 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800 transition">
+            Siguiente
+          </button>
         </div>
       </div>
     </div>

@@ -8,7 +8,10 @@ export class RrhhService {
   private supabase: SupabaseClient;
 
   constructor() {
-    this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
+    this.supabase = createClient(
+      environment.supabaseUrl,
+      environment.supabaseKey,
+    );
   }
 
   // Obtiene todas las áreas
@@ -55,6 +58,19 @@ export class RrhhService {
     return data;
   }
 
+  // Actualiza cualquier campo del empleado (Nombre, Cargo, Área, Estado)
+  async updateEmpleado(id: string, cambios: any): Promise<any> {
+    const { data, error } = await this.supabase
+      .from("empleados")
+      .update(cambios)
+      .eq("id", id)
+      .select("*, areas(nombre)")
+      .single();
+
+    if (error) throw error;
+    return data;
+  }
+
   // Credenciales (accesos)
   async getCredenciales(): Promise<any[]> {
     const { data, error } = await this.supabase
@@ -74,7 +90,10 @@ export class RrhhService {
     return data;
   }
 
-  async updateCredencial(id: string, cambios: Partial<Credencial>): Promise<any> {
+  async updateCredencial(
+    id: string,
+    cambios: Partial<Credencial>,
+  ): Promise<any> {
     const { data, error } = await this.supabase
       .from("credenciales")
       .update(cambios)
@@ -87,7 +106,10 @@ export class RrhhService {
 
   // Elimina un empleado por id
   async deleteEmpleado(id: string): Promise<void> {
-    const { error } = await this.supabase.from("empleados").delete().eq("id", id);
+    const { error } = await this.supabase
+      .from("empleados")
+      .delete()
+      .eq("id", id);
     if (error) throw error;
   }
 }

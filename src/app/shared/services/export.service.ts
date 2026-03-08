@@ -9,14 +9,34 @@ import autoTable from "jspdf-autotable";
 export class ExportService {
   constructor() {}
 
-  // 📊 --- MAGIA PARA EXPORTAR A EXCEL ---
-  exportToExcel(data: any[], fileName: string): void {
+  // 📊 --- MAGIA PREMIUM PARA EXPORTAR A EXCEL ---
+  exportToExcel(data: any[], fileName: string, tituloReporte: string = "Reporte del Sistema"): void {
     if (!data || data.length === 0) {
       console.warn("No hay datos para exportar a Excel");
       return;
     }
 
-    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet([]);
+
+    XLSX.utils.sheet_add_aoa(worksheet, [
+      ["A&M SMART HUB - ERP OPERATIVO"], 
+      [tituloReporte.toUpperCase()], 
+      [`Generado el: ${new Date().toLocaleString()}`],
+      [""], 
+    ], { origin: "A1" });
+
+    XLSX.utils.sheet_add_json(worksheet, data, { origin: "A5", skipHeader: false });
+
+    // Auto-ajustar columnas
+    const objectKeys = Object.keys(data[0]);
+    const wscols = objectKeys.map(key => {
+      const maxLength = Math.max(
+        ...data.map(item => (item[key] ? item[key].toString().length : 0)),
+        key.length
+      );
+      return { wch: Math.min(maxLength + 2, 50) };
+    });
+    worksheet['!cols'] = wscols;
 
     const workbook: XLSX.WorkBook = {
       Sheets: { Reporte: worksheet },
@@ -24,11 +44,10 @@ export class ExportService {
     };
 
     const timestamp = new Date().getTime();
-
     XLSX.writeFile(workbook, `${fileName}_${timestamp}.xlsx`);
   }
 
-  // 📄 --- MAGIA PARA EXPORTAR A PDF CON MARCA DE AGUA ---
+  // 📄 --- EXPORTAR A PDF CORREGIDO ---
   exportToPdf(
     data: any[],
     fileName: string,
@@ -39,73 +58,67 @@ export class ExportService {
       return;
     }
 
-    // Configuración inicial del PDF (A4, vertical, unidades en mm)
     const doc = new jsPDF("p", "mm", "a4");
 
-    // 1. Extraemos cabeceras y cuerpo (Datos limpios que le pasamos)
     const headers = Object.keys(data[0]);
     const body = data.map((obj) =>
       Object.values(obj).map((val) => String(val || "-")),
     );
 
-    // 2. Dibujamos el Título del reporte
-    doc.setFontSize(14);
-    doc.setTextColor(31, 41, 55); // Gris oscuro
-    doc.text(titulo, 14, 15);
+    // Encabezados
+    doc.setFontSize(16);
+    doc.setTextColor(31, 41, 55); 
+    doc.setFont("helvetica", "bold");
+    doc.text("A&M Smart Hub", 14, 15);
 
-    // 3. Dibujamos la fecha y hora de generación
-    doc.setFontSize(10);
-    doc.setTextColor(107, 114, 128); // Gris claro
-    doc.text(`Generado el: ${new Date().toLocaleString()}`, 14, 22);
+    doc.setFontSize(12);
+    doc.setTextColor(59, 130, 246); 
+    doc.text(titulo, 14, 22);
 
-    // 4. Dibujamos la tabla usando AutoTable
+    doc.setFontSize(9);
+    doc.setTextColor(107, 114, 128); 
+    doc.setFont("helvetica", "normal");
+    doc.text(`Fecha de generación: ${new Date().toLocaleString()}`, 14, 28);
+
     autoTable(doc, {
       head: [headers],
       body: body,
-      startY: 28, // Empieza debajo de la fecha
-      theme: "grid", // Tema con bordes
-      styles: { fontSize: 8, cellPadding: 2 },
-      headStyles: { fillColor: [59, 130, 246] }, // Azul 'brand-500'
-      alternateRowStyles: { fillColor: [249, 250, 251] }, // Filas intercaladas
+      startY: 35, 
+      theme: "grid", 
+      styles: { fontSize: 8, cellPadding: 2.5 },
+      headStyles: { fillColor: [59, 130, 246], textColor: 255, fontStyle: 'bold' },
+      alternateRowStyles: { fillColor: [249, 250, 251] }, 
 
-      // 🔥 --- AQUÍ ESTÁ LA MAGIA DE LA MARCA DE AGUA ---
-      // 'didDrawPage' se ejecuta al final de CADA página
       didDrawPage: (dataArg) => {
-        // Obtenemos el total de páginas (actualizando el alias interno de jsPDF)
-        const totalPages = doc.getNumberOfPages();
-
-        // --- TEXTO SUTIL DE "OSZ SOFTWARE" ---
-        doc.setFontSize(40); // Grande pero sutil
-        doc.setTextColor(230, 230, 230); // Gris SÚPER CLARO (Casi invisible)
-        doc.setFont("helvetica", "bold");
-
-        // Calculamos el centro de la página A4 (aprox 210mm x 297mm)
         const pageHeight = doc.internal.pageSize.height;
         const pageWidth = doc.internal.pageSize.width;
 
-        // Colocamos el texto inclinado en el centro
-        doc.text("OSZ Software", pageWidth / 2, pageHeight / 2, {
-          align: "center", // Centrado horizontal
-          angle: 45, // Inclinado 45 grados
-        });
-        // ---------------------------------------------
+        // 🔥 MARCA DE AGUA CORREGIDA 🔥
+        doc.setFontSize(26); // <-- Mucho más pequeña
+        doc.setTextColor(200, 200, 200); // Gris claro
+        doc.setFont("helvetica", "bold");
 
-        // --- PIE DE PÁGINA OBLIGATORIO ---
+        // Usamos 'renderingMode: stroke' para dibujar solo el contorno transparente
+        doc.text("A&M SMART HUB", pageWidth / 2, pageHeight / 2, {
+          align: "center", 
+          angle: 45,
+          renderingMode: "stroke" // <-- ESTA LÍNEA EVITA QUE SE TAPE LA TABLA
+        });
+
+        // Pie de página
         doc.setFontSize(8);
-        doc.setTextColor(150); // Gris muy suave
+        doc.setTextColor(150); 
         doc.setFont("helvetica", "normal");
 
-        const footText = `Pag. ${dataArg.pageNumber}`;
-        const finalText = `Sistema OSZ Software v1.0 | ${footText}`;
+        const footText = `Página ${dataArg.pageNumber} de ${doc.getNumberOfPages()}`;
+        const finalText = `Propiedad de A&M Smart Hub | Desarrollado por OSZ Software | ${footText}`;
 
-        // Dibujamos el pie de página centrado abajo (20mm arriba del borde)
         doc.text(finalText, pageWidth / 2, pageHeight - 10, {
           align: "center",
         });
       },
     });
 
-    // 5. ¡Descarga del PDF!
     const timestamp = new Date().getTime();
     doc.save(`${fileName}_${timestamp}.pdf`);
   }

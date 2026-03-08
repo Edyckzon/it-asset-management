@@ -1,8 +1,7 @@
 <div class="max-w-6xl mx-auto p-4">
-  <h2 class="text-xl font-bold mb-6 text-gray-800">Inventario de Activos TI</h2>
-
-  <div class="bg-white rounded-xl shadow-md p-6 mb-8 border border-gray-100">
-    <h3 class="text-md font-semibold mb-4 text-brand-600">
+  
+  <div class="bg-white dark:bg-gray-900 rounded-xl shadow-theme-sm border border-gray-200 dark:border-gray-800 p-5 mb-6">
+    <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">
       Registrar Nuevo Activo (PC, Monitor, Laptop, etc.)
     </h3>
     <form
@@ -11,31 +10,24 @@
       class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4"
     >
       <div>
-        <label class="block text-sm font-medium text-gray-600"
-          >Código Inventario</label
-        >
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Código Inventario</label>
         <input
           formControlName="codigo_inventario"
           placeholder="Ej: PC-001"
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500 sm:text-sm border p-2"
+          class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent dark:border-gray-700 dark:bg-gray-800 dark:text-white transition-all"
         />
-        @if (
-          activoForm.get("codigo_inventario")?.invalid &&
-          activoForm.get("codigo_inventario")?.touched
-        ) {
-          <span class="text-xs text-red-500">Este campo es obligatorio</span>
+        @if (activoForm.get("codigo_inventario")?.invalid && activoForm.get("codigo_inventario")?.touched) {
+          <span class="text-xs text-error-500 mt-1 block">Este campo es obligatorio</span>
         }
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-600"
-          >Tipo de Activo</label
-        >
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tipo de Activo</label>
         <select
           formControlName="tipo_activo"
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500 sm:text-sm border p-2"
+          class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent dark:border-gray-700 dark:bg-gray-800 dark:text-white transition-all"
         >
-          <option value="">-- Seleccionar --</option>
+          <option value="" disabled selected>-- Seleccionar --</option>
           <option value="Laptop">Laptop</option>
           <option value="Desktop">Desktop</option>
           <option value="Monitor">Monitor</option>
@@ -46,69 +38,57 @@
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-600"
-          >Marca / Modelo</label
-        >
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Marca / Modelo</label>
         <input
           formControlName="marca_modelo"
-          placeholder="Dell XPS / LG 24'"
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm border p-2"
+          placeholder="Ej: Dell XPS / LG 24'"
+          class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent dark:border-gray-700 dark:bg-gray-800 dark:text-white transition-all"
         />
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-600"
-          >Número de Serie</label
-        >
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Número de Serie</label>
         <input
           formControlName="numero_serie"
           placeholder="S/N: XYZ123"
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm border p-2"
+          class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent dark:border-gray-700 dark:bg-gray-800 dark:text-white transition-all"
         />
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-600"
-          >Nombre en Red (PC Name)</label
-        >
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nombre en Red (PC Name)</label>
         <input
           formControlName="nombre_pc"
           placeholder="SOPORTE-PC01"
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm border p-2"
+          class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent dark:border-gray-700 dark:bg-gray-800 dark:text-white transition-all"
         />
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-600"
-          >Dirección MAC</label
-        >
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Dirección MAC</label>
         <input
           formControlName="direccion_mac"
           placeholder="00:0A:95:9D:68:16"
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm border p-2"
+          class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent dark:border-gray-700 dark:bg-gray-800 dark:text-white transition-all"
         />
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-600"
-          >Dirección IP</label
-        >
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Dirección IP</label>
         <input
           formControlName="direccion_ip"
           placeholder="192.168.1.XX"
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm border p-2"
+          class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent dark:border-gray-700 dark:bg-gray-800 dark:text-white transition-all"
         />
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-600"
-          >Vincular a Compra (Opcional)</label
-        >
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Vincular a Compra (Opcional)</label>
         <select
           formControlName="compra_id"
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm border p-2"
+          class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent dark:border-gray-700 dark:bg-gray-800 dark:text-white transition-all"
         >
-          <option value="">-- No aplica (Equipo antiguo) --</option>
+          <option value="">-- No aplica (Antiguo) --</option>
           @for (c of compras(); track c.id) {
             <option [value]="c.id">
               {{ c.tipo_producto }} ({{ c.fecha_compra | date: "shortDate" }})
@@ -117,12 +97,17 @@
         </select>
       </div>
 
-      <div class="md:col-span-3 lg:col-span-4 text-right pt-2">
+      <div class="md:col-span-3 lg:col-span-4 flex justify-end mt-2">
         <button
           type="submit"
-          [disabled]="isLoading()"
-          class="bg-brand-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-brand-700 transition-colors shadow-sm disabled:opacity-50"
+          [disabled]="activoForm.invalid || isLoading()"
+          class="inline-flex items-center gap-2 px-6 py-2.5 text-sm font-medium text-white bg-brand-500 rounded-lg hover:bg-brand-600 disabled:opacity-50 transition-colors shadow-sm"
         >
+          @if (isLoading()) {
+            <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+          } @else {
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/></svg>
+          }
           {{ isLoading() ? "Guardando..." : "Añadir al Inventario" }}
         </button>
       </div>
@@ -130,255 +115,148 @@
   </div>
 
   @if (isLoading() && activos().length === 0) {
-    <div class="p-8 text-center text-gray-500">Cargando activos...</div>
+    <div class="py-10 text-center text-gray-500 dark:text-gray-400">Cargando inventario de activos...</div>
   } @else {
     <div class="flex justify-end gap-3 mb-4">
       <button
         (click)="exportarExcel()"
         [disabled]="activos().length === 0"
-        class="inline-flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-700 border border-green-200 rounded hover:bg-green-100 transition-colors text-sm font-medium shadow-sm disabled:opacity-50"
+        class="inline-flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-700 hover:bg-green-100 rounded-md transition-colors text-sm font-medium disabled:opacity-50"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-4 w-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-          />
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
         Excel
       </button>
       <button
         (click)="exportarPdf()"
         [disabled]="activos().length === 0"
-        class="inline-flex items-center gap-2 px-3 py-1.5 bg-red-50 text-red-700 border border-red-200 rounded hover:bg-red-100 transition-colors text-sm font-medium shadow-sm disabled:opacity-50"
+        class="inline-flex items-center gap-2 px-3 py-1.5 bg-red-50 text-red-700 hover:bg-red-100 rounded-md transition-colors text-sm font-medium disabled:opacity-50"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-4 w-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
-          />
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
         PDF
       </button>
     </div>
 
-    <div
-      class="overflow-hidden bg-white rounded-xl shadow-sm border border-gray-100"
-    >
+    <div class="overflow-hidden bg-white dark:bg-gray-900 rounded-xl shadow-theme-sm border border-gray-200 dark:border-gray-800">
       <div class="overflow-x-auto">
         <table class="min-w-full text-left border-collapse">
-          <thead class="bg-gray-50 border-b border-gray-100">
+          <thead class="bg-gray-50 dark:bg-gray-800/50">
             <tr>
-              <th
-                class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider"
-              >
-                Código / Tipo
-              </th>
-              <th
-                class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider"
-              >
-                Detalles Técnicos
-              </th>
-              <th
-                class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider"
-              >
-                Estado
-              </th>
-              <th
-                class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider"
-              >
-                Asignado a
-              </th>
-              <th
-                class="px-6 py-4 text-xs font-bold text-gray-500 uppercase text-center tracking-wider"
-              >
-                Acciones
-              </th>
+              <th class="px-5 py-4 text-xs font-bold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Código / Tipo</th>
+              <th class="px-5 py-4 text-xs font-bold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Detalles Técnicos</th>
+              <th class="px-5 py-4 text-xs font-bold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Estado</th>
+              <th class="px-5 py-4 text-xs font-bold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Asignado a</th>
+              <th class="px-5 py-4 text-xs font-bold text-gray-600 dark:text-gray-300 uppercase tracking-wider text-center">Acciones</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-gray-100">
+          <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
             @for (a of paginatedActivos(); track a.id) {
-              <tr class="hover:bg-blue-50/30 transition-colors">
-                <td class="px-6 py-4">
-                  <div class="font-bold text-gray-800">
-                    {{ a.codigo_inventario }}
-                  </div>
-                  <div class="text-xs text-gray-400">{{ a.tipo_activo }}</div>
+              <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition">
+                <td class="px-5 py-4">
+                  <div class="font-bold text-gray-800 dark:text-white">{{ a.codigo_inventario }}</div>
+                  <div class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ a.tipo_activo }}</div>
                 </td>
-                <td class="px-6 py-4">
+                <td class="px-5 py-4">
                   @if (!editing()[a.id]) {
-                    <div class="text-sm font-medium text-gray-700">
-                      Name:
-                      <span class="font-mono text-gray-600">{{
-                        a.nombre_pc || "N/A"
-                      }}</span>
+                    <div class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                      Name: <span class="font-mono text-gray-600 dark:text-gray-400">{{ a.nombre_pc || "N/A" }}</span>
                     </div>
-                    <div class="text-xs text-gray-500 mt-1">
-                      IP:
-                      <span class="font-mono">{{ a.direccion_ip || "-" }}</span>
-                      | MAC:
-                      <span class="font-mono">{{
-                        a.direccion_mac || "-"
-                      }}</span>
+                    <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      IP: <span class="font-mono">{{ a.direccion_ip || "-" }}</span>
+                      | MAC: <span class="font-mono">{{ a.direccion_mac || "-" }}</span>
                     </div>
                   } @else {
                     <div class="space-y-2">
                       <input
-                        class="w-full text-xs p-1.5 border border-gray-300 rounded focus:ring-brand-500 focus:border-brand-500"
+                        class="w-full text-xs p-1.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-brand-500 focus:border-brand-500 dark:bg-gray-800 dark:border-gray-700 dark:text-white transition-all"
                         [value]="editBuffers()[a.id]?.nombre_pc || ''"
-                        (input)="
-                          onEditField(
-                            a.id,
-                            'nombre_pc',
-                            $any($event.target).value
-                          )
-                        "
+                        (input)="onEditField(a.id, 'nombre_pc', $any($event.target).value)"
                         placeholder="Nombre PC"
                       />
                       <div class="flex gap-2">
                         <input
-                          class="w-1/2 text-xs p-1.5 border border-gray-300 rounded focus:ring-brand-500 focus:border-brand-500"
+                          class="w-1/2 text-xs p-1.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-brand-500 focus:border-brand-500 dark:bg-gray-800 dark:border-gray-700 dark:text-white transition-all"
                           [value]="editBuffers()[a.id]?.direccion_ip || ''"
-                          (input)="
-                            onEditField(
-                              a.id,
-                              'direccion_ip',
-                              $any($event.target).value
-                            )
-                          "
+                          (input)="onEditField(a.id, 'direccion_ip', $any($event.target).value)"
                           placeholder="IP"
                         />
                         <input
-                          class="w-1/2 text-xs p-1.5 border border-gray-300 rounded focus:ring-brand-500 focus:border-brand-500"
+                          class="w-1/2 text-xs p-1.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-brand-500 focus:border-brand-500 dark:bg-gray-800 dark:border-gray-700 dark:text-white transition-all"
                           [value]="editBuffers()[a.id]?.direccion_mac || ''"
-                          (input)="
-                            onEditField(
-                              a.id,
-                              'direccion_mac',
-                              $any($event.target).value
-                            )
-                          "
+                          (input)="onEditField(a.id, 'direccion_mac', $any($event.target).value)"
                           placeholder="MAC"
                         />
                       </div>
                     </div>
                   }
                 </td>
-                <td class="px-6 py-4">
+                <td class="px-5 py-4">
                   <span
-                    class="px-3 py-1 rounded-full text-xs font-semibold"
+                    class="px-2.5 py-1 rounded-full text-xs font-semibold border"
                     [ngClass]="{
-                      'bg-green-100 text-green-700': a.estado === 'Disponible',
-                      'bg-blue-100 text-blue-700': a.estado === 'Asignado',
-                      'bg-yellow-100 text-yellow-700':
-                        a.estado === 'En Reparación',
-                      'bg-red-100 text-red-700': a.estado === 'Baja',
+                      'bg-success-50 text-success-700 border-success-200 dark:bg-success-500/10 dark:text-success-400 dark:border-success-500/20': a.estado === 'Disponible',
+                      'bg-brand-50 text-brand-700 border-brand-200 dark:bg-brand-500/10 dark:text-brand-400 dark:border-brand-500/20': a.estado === 'Asignado',
+                      'bg-warning-50 text-warning-700 border-warning-200 dark:bg-warning-500/10 dark:text-warning-400 dark:border-warning-500/20': a.estado === 'En Reparación',
+                      'bg-error-50 text-error-700 border-error-200 dark:bg-error-500/10 dark:text-error-400 dark:border-error-500/20': a.estado === 'Baja'
                     }"
                   >
                     {{ a.estado }}
                   </span>
                 </td>
-                <td class="px-6 py-4">
+                <td class="px-5 py-4">
                   @if (a.empleados) {
                     <div class="flex items-center gap-2">
-                      <div
-                        class="h-8 w-8 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center text-xs font-bold uppercase"
-                      >
+                      <div class="h-7 w-7 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center text-xs font-bold uppercase dark:bg-brand-900/30 dark:text-brand-400">
                         {{ a.empleados.nombre_completo.charAt(0) }}
                       </div>
-                      <div class="text-sm font-medium text-gray-900">
+                      <div class="text-sm font-medium text-gray-800 dark:text-gray-200">
                         {{ a.empleados.nombre_completo }}
                       </div>
                     </div>
                   } @else {
-                    <span
-                      class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600"
-                    >
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-600 border border-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700">
                       📦 En Almacén
                     </span>
                   }
                 </td>
-                <td class="px-6 py-4 text-center">
+                <td class="px-5 py-4 text-center">
                   <div class="flex justify-center gap-2">
                     @if (!editing()[a.id]) {
                       <button
                         (click)="startEdit(a)"
-                        class="p-2 text-yellow-600 hover:bg-yellow-50 rounded-lg transition-colors"
+                        class="p-2 text-warning-500 hover:bg-warning-50 hover:text-warning-600 rounded-lg transition-colors dark:hover:bg-warning-500/10"
                         title="Editar detalles técnicos"
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          class="h-5 w-5"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                          />
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                         </svg>
                       </button>
                     } @else {
                       <button
                         (click)="saveEdit(a.id)"
-                        class="p-1.5 bg-green-500 text-white rounded hover:bg-green-600 transition-colors shadow-sm"
+                        class="p-2 bg-success-500 text-white rounded-lg hover:bg-success-600 transition-colors shadow-sm"
                         title="Guardar"
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          class="h-4 w-4"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M5 13l4 4L19 7"
-                          />
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                         </svg>
                       </button>
                       <button
                         (click)="cancelEdit(a.id)"
-                        class="p-1.5 bg-gray-400 text-white rounded hover:bg-gray-500 transition-colors shadow-sm"
+                        class="p-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition-colors shadow-sm dark:bg-gray-600 dark:hover:bg-gray-500"
                         title="Cancelar"
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          class="h-4 w-4"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12"
-                          />
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                       </button>
                     }
                   </div>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="5" class="px-5 py-8 text-center text-sm text-gray-500 dark:text-gray-400">
+                  No hay activos registrados en el inventario.
                 </td>
               </tr>
             }
@@ -386,31 +264,24 @@
         </table>
       </div>
 
-      <div
-        class="flex items-center justify-between px-6 py-4 border-t border-gray-100 bg-gray-50"
-      >
-        <div class="hidden sm:block">
-          <p class="text-sm text-gray-600">
-            Página
-            <span class="font-bold text-gray-800">{{ currentPage() }}</span> de
-            <span class="font-bold text-gray-800">{{ totalPages() || 1 }}</span>
-            <span class="text-gray-400 mx-2">|</span>
-            Total de activos:
-            <span class="font-bold text-brand-600">{{ activos().length }}</span>
-          </p>
-        </div>
+      <div class="flex items-center justify-between px-5 py-3 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
+        <p class="text-sm text-gray-500 dark:text-gray-400">
+          Página <span class="font-medium">{{ currentPage() }}</span> de <span class="font-medium">{{ totalPages() || 1 }}</span>
+          <span class="text-gray-300 dark:text-gray-600 mx-2">|</span>
+          Total: <span class="font-medium text-brand-600 dark:text-brand-400">{{ activos().length }}</span> activos
+        </p>
         <div class="flex gap-2">
           <button
             (click)="prevPage()"
             [disabled]="currentPage() === 1"
-            class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm transition-all"
+            class="px-3 py-1.5 text-sm font-medium border border-gray-200 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800 transition"
           >
             Anterior
           </button>
           <button
             (click)="nextPage()"
             [disabled]="currentPage() >= totalPages() || totalPages() === 0"
-            class="px-4 py-2 text-sm font-medium text-white bg-brand-500 border border-transparent rounded-md hover:bg-brand-600 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm transition-all"
+            class="px-3 py-1.5 text-sm font-medium border border-gray-200 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800 transition"
           >
             Siguiente
           </button>

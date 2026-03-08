@@ -1,59 +1,82 @@
 import { Component, OnInit, signal, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { EcommerceMetricsComponent } from "../../../shared/components/ecommerce/ecommerce-metrics/ecommerce-metrics.component";
-import { MonthlySalesChartComponent } from "../../../shared/components/ecommerce/monthly-sales-chart/monthly-sales-chart.component";
-import { MonthlyTargetComponent } from "../../../shared/components/ecommerce/monthly-target/monthly-target.component";
-import { StatisticsChartComponent } from "../../../shared/components/ecommerce/statics-chart/statics-chart.component";
-import { DemographicCardComponent } from "../../../shared/components/ecommerce/demographic-card/demographic-card.component";
-import { RecentOrdersComponent } from "../../../shared/components/ecommerce/recent-orders/recent-orders.component";
+import { RouterModule } from "@angular/router";
+// Importamos TODOS tus servicios
 import { RrhhService } from "../../../shared/services/rrhh.service";
 import { InventarioService } from "../../../shared/services/inventario.service";
 import { HistorialService } from "../../../shared/services/historial.service";
+import { EquipoService } from "../../../shared/services/equipo.service";
 
 @Component({
   selector: "app-ecommerce",
-  imports: [
-    CommonModule,
-    EcommerceMetricsComponent,
-    MonthlySalesChartComponent,
-    MonthlyTargetComponent,
-    StatisticsChartComponent,
-    DemographicCardComponent,
-    RecentOrdersComponent,
-  ],
+  standalone: true,
+  imports: [CommonModule, RouterModule],
   templateUrl: "./ecommerce.component.html",
 })
 export class EcommerceComponent implements OnInit {
   private rrhh = inject(RrhhService);
   private inv = inject(InventarioService);
   private historial = inject(HistorialService);
+  private equiposSvc = inject(EquipoService);
 
+  // --- SEÑALES PARA LAS MÉTRICAS ---
   totalEmpleados = signal(0);
+  totalEquipos = signal(0);
+  
+  // Hardware
   activosDisponibles = signal(0);
   activosAsignados = signal(0);
+  activosEnReparacion = signal(0);
+  
+  // Financiero & Accesos
+  inversionTotal = signal(0);
+  totalCredenciales = signal(0);
+  
+  // Tablas
   ultimosMovimientos = signal<any[]>([]);
-
-  constructor() {}
+  ultimasAsignaciones = signal<any[]>([]);
+  
+  isLoading = signal(true);
 
   async ngOnInit(): Promise<void> {
     try {
-      const [empleados, activos, movimientos] = await Promise.all([
+      this.isLoading.set(true);
+      
+      const [empleados, activos, movimientos, compras, asignaciones, credenciales, equipos] = await Promise.all([
         this.rrhh.getEmpleados(),
         this.inv.getActivos(),
         this.historial.getAll(),
+        this.inv.getCompras(),
+        this.inv.getAsignacionesActivas(), // 🔥 AQUÍ ESTÁ LA CORRECCIÓN
+        this.rrhh.getCredenciales(),
+        this.equiposSvc.getEquipos()
       ]);
 
-      this.totalEmpleados.set((empleados || []).length);
+      // 1. Personal y Grupos
+      this.totalEmpleados.set((empleados || []).filter(e => e.estado === true).length);
+      this.totalEquipos.set((equipos || []).length);
 
+      // 2. Hardware
       const acts: any[] = activos || [];
-      const disponibles = acts.filter((a) => a.estado === "Disponible").length;
-      const asignados = acts.filter((a) => a.estado === "Asignado").length;
-      this.activosDisponibles.set(disponibles);
-      this.activosAsignados.set(asignados);
+      this.activosDisponibles.set(acts.filter((a) => a.estado === "Disponible").length);
+      this.activosAsignados.set(acts.filter((a) => a.estado === "Asignado").length);
+      this.activosEnReparacion.set(acts.filter((a) => a.estado === "En Reparación").length);
 
-      this.ultimosMovimientos.set((movimientos || []).slice(0, 5));
+      // 3. Financiero (Sumar total de compras: Cantidad * Precio)
+      const totalDinero = (compras || []).reduce((acc, current) => acc + (current.cantidad * current.precio_unitario), 0);
+      this.inversionTotal.set(totalDinero);
+
+      // 4. Seguridad (Credenciales)
+      this.totalCredenciales.set((credenciales || []).length);
+
+      // 5. Tablas de Resumen (Solo las últimas)
+      this.ultimosMovimientos.set((movimientos || []).slice(0, 6)); 
+      this.ultimasAsignaciones.set((asignaciones || []).slice(0, 5)); 
+      
     } catch (err) {
       console.error("Error cargando dashboard TI", err);
+    } finally {
+      this.isLoading.set(false);
     }
   }
 }

@@ -1,0 +1,138 @@
+<div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+  
+  <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <h2 class="text-title-md2 font-bold text-gray-800 dark:text-white">
+        Organización de Equipos
+      </h2>
+      <p class="text-sm text-gray-500">Agrupa a tu personal en Squads, áreas o proyectos.</p>
+    </div>
+    <button (click)="abrirModal()" class="inline-flex items-center justify-center gap-2 rounded-lg bg-brand-500 py-2.5 px-6 font-medium text-white transition-colors hover:bg-brand-600">
+      + Nuevo Equipo
+    </button>
+  </div>
+
+  @if (isLoading) {
+    <div class="text-center py-10 text-gray-500">Cargando organización...</div>
+  } @else {
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+      
+      @for (equipo of equipos; track equipo.id) {
+        <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-theme-sm dark:border-gray-800 dark:bg-gray-900 flex flex-col transition hover:shadow-theme-md">
+          
+          <div class="flex justify-between items-start mb-4">
+            <div>
+              <h3 class="text-lg font-bold text-gray-800 dark:text-white">{{ equipo.nombre_equipo }}</h3>
+              <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ equipo.descripcion || 'Sin descripción' }}</p>
+            </div>
+            <button (click)="eliminar(equipo.id)" class="text-gray-400 hover:text-error-500 transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+            </button>
+          </div>
+
+          <div class="mb-4">
+            <span class="text-xs text-gray-500 block mb-1">Líder del Equipo:</span>
+            @if (equipo.lider) {
+              <div class="flex items-center gap-2">
+                <div class="h-6 w-6 rounded-full bg-brand-100 text-brand-600 flex items-center justify-center text-xs font-bold dark:bg-brand-900/30 dark:text-brand-400">
+                  {{ getIniciales(equipo.lider.nombre_completo) }}
+                </div>
+                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ equipo.lider.nombre_completo }}</span>
+              </div>
+            } @else {
+              <span class="text-sm italic text-warning-500">Sin líder asignado</span>
+            }
+          </div>
+
+          <div class="flex-grow bg-gray-50 dark:bg-gray-800/50 rounded-xl p-3 border border-gray-100 dark:border-gray-800">
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-xs font-semibold text-gray-500 uppercase">Integrantes ({{ equipo.miembros.length }})</span>
+              <button (click)="abrirModalMiembros(equipo)" class="text-xs font-medium text-brand-500 hover:text-brand-600 bg-brand-50 hover:bg-brand-100 px-2 py-1 rounded-md transition dark:bg-brand-500/10 dark:hover:bg-brand-500/20">
+                Editar
+              </button>
+            </div>
+            
+            @if (equipo.miembros.length > 0) {
+              <div class="grid grid-cols-4 gap-2">
+                @for (miembro of equipo.miembros; track miembro.id) {
+                  <div class="flex flex-col items-center group cursor-help" [title]="miembro.nombre_completo + ' - ' + miembro.cargo">
+                    <div class="h-10 w-10 rounded-xl bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 flex items-center justify-center text-sm font-bold shadow-sm group-hover:bg-brand-50 group-hover:border-brand-200 transition">
+                      {{ getIniciales(miembro.nombre_completo) }}
+                    </div>
+                    <span class="text-[10px] text-gray-500 mt-1 truncate w-full text-center">{{ miembro.nombre_completo.split(' ')[0] }}</span>
+                  </div>
+                }
+              </div>
+            } @else {
+              <div class="text-center py-4 text-xs text-gray-400">Carpeta vacía. Añade integrantes.</div>
+            }
+          </div>
+
+        </div>
+      }
+    </div>
+  }
+</div>
+
+@if (isModalOpen) {
+  <div class="fixed inset-0 z-999999 flex items-center justify-center bg-gray-900/60 p-4 backdrop-blur-sm animate-in fade-in">
+    <div class="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl dark:bg-gray-900 border border-gray-200 dark:border-gray-800">
+      <h3 class="mb-5 text-xl font-bold text-gray-800 dark:text-white">Crear Nuevo Equipo</h3>
+      <div class="mb-4">
+        <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Nombre del Equipo</label>
+        <input type="text" [(ngModel)]="nuevoEquipo.nombre_equipo" class="w-full rounded-lg border border-gray-300 bg-gray-50 py-2.5 px-4 text-gray-800 outline-none focus:border-brand-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white">
+      </div>
+      <div class="mb-4">
+        <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Descripción</label>
+        <textarea [(ngModel)]="nuevoEquipo.descripcion" rows="2" class="w-full rounded-lg border border-gray-300 bg-gray-50 py-2.5 px-4 text-gray-800 outline-none focus:border-brand-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"></textarea>
+      </div>
+      <div class="mb-6">
+        <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Líder del Equipo</label>
+        <select [(ngModel)]="nuevoEquipo.lider_id" class="w-full rounded-lg border border-gray-300 bg-gray-50 py-2.5 px-4 text-gray-800 outline-none focus:border-brand-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white">
+          <option value="">-- Seleccionar --</option>
+          @for (emp of empleados; track emp.id) { <option [value]="emp.id">{{ emp.nombre_completo }}</option> }
+        </select>
+      </div>
+      <div class="flex justify-end gap-3">
+        <button (click)="cerrarModal()" class="rounded-lg border px-5 py-2.5 text-sm dark:text-gray-300">Cancelar</button>
+        <button (click)="guardarEquipo()" class="rounded-lg bg-brand-500 px-5 py-2.5 text-sm text-white">Guardar</button>
+      </div>
+    </div>
+  </div>
+}
+
+@if (isMiembrosModalOpen) {
+  <div class="fixed inset-0 z-999999 flex items-center justify-center bg-gray-900/60 p-4 backdrop-blur-sm animate-in fade-in">
+    <div class="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl dark:bg-gray-900 border border-gray-200 dark:border-gray-800 flex flex-col max-h-[80vh]">
+      <h3 class="mb-1 text-xl font-bold text-gray-800 dark:text-white">Añadir Integrantes</h3>
+      <p class="mb-5 text-sm text-gray-500">Selecciona quiénes pertenecen a: <span class="font-bold text-brand-500">{{ equipoSeleccionado?.nombre_equipo }}</span></p>
+      
+      <div class="overflow-y-auto pr-2 flex-grow custom-scrollbar mb-6 space-y-2">
+        @for (emp of empleados; track emp.id) {
+          @if (emp.id !== equipoSeleccionado?.lider_id) {
+            <label class="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:bg-gray-50 cursor-pointer transition dark:border-gray-800 dark:hover:bg-gray-800/50"
+                   [ngClass]="{'bg-brand-50 border-brand-200 dark:bg-brand-900/20 dark:border-brand-800': miembrosSeleccionados.includes(emp.id)}">
+              
+              <input type="checkbox" 
+                     [checked]="miembrosSeleccionados.includes(emp.id)"
+                     (change)="toggleMiembro(emp.id)"
+                     class="w-5 h-5 rounded border-gray-300 text-brand-500 focus:ring-brand-500">
+              
+              <div class="flex flex-col">
+                <span class="text-sm font-medium text-gray-800 dark:text-white">{{ emp.nombre_completo }}</span>
+                <span class="text-xs text-gray-500">{{ emp.cargo || 'Sin cargo' }}</span>
+              </div>
+            </label>
+          }
+        }
+      </div>
+
+      <div class="flex justify-end gap-3 mt-auto pt-4 border-t border-gray-100 dark:border-gray-800">
+        <button (click)="cerrarModalMiembros()" class="rounded-lg border border-gray-300 px-5 py-2.5 text-sm dark:border-gray-700 dark:text-gray-300 hover:bg-gray-50">Cancelar</button>
+        <button (click)="guardarMiembros()" class="rounded-lg bg-brand-500 px-5 py-2.5 text-sm text-white hover:bg-brand-600">Actualizar Integrantes</button>
+      </div>
+    </div>
+  </div>
+}

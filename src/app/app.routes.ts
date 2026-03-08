@@ -13,6 +13,7 @@ import { ComprasHardwareComponent } from "./pages/inventario/compras/compras-har
 import { ActivosComponent } from "./pages/inventario/activos/activos.component";
 import { HistorialComponent } from "./pages/inventario/historial/historial.component";
 import { AsignacionesComponent } from "./pages/inventario/asignaciones/asignaciones.component";
+import { EquiposComponent } from "./pages/rrhh/equipos/equipos.component";
 
 /* === IMPORTACIONES COMENTADAS DE LA PLANTILLA ===
 import { ProfileComponent } from "./pages/profile/profile.component";
@@ -55,6 +56,11 @@ export const routes: Routes = [
         path: "rrhh/empleados",
         component: EmpleadosComponent,
         title: "RRHH - Empleados",
+      },
+      {
+        path: "rrhh/equipos",
+        component: EquiposComponent,
+        title: "RRHH - Gestión de Equipos",
       },
       {
         path: "rrhh/credenciales",

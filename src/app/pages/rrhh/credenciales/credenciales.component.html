@@ -1,8 +1,9 @@
 <div class="max-w-6xl mx-auto p-4">
-  <div class="bg-white rounded-lg shadow-md p-6 mb-6 border border-gray-100">
-    <h2 class="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">
+  
+  <div class="bg-white dark:bg-gray-900 rounded-xl shadow-theme-sm border border-gray-200 dark:border-gray-800 p-5 mb-6">
+    <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">
       Registrar Accesos / Credenciales
-    </h2>
+    </h3>
 
     <form
       [formGroup]="credForm"
@@ -10,14 +11,12 @@
       class="grid grid-cols-1 md:grid-cols-3 gap-4"
     >
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1"
-          >Empleado</label
-        >
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Empleado</label>
         <select
           formControlName="empleado_id"
-          class="w-full h-10 px-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-400 bg-white"
+          class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent dark:border-gray-700 dark:bg-gray-800 dark:text-white"
         >
-          <option value="">-- Seleccionar --</option>
+          <option value="" disabled selected>-- Seleccionar --</option>
           @for (e of empleados(); track e.id) {
             <option [value]="e.id">{{ e.nombre_completo }}</option>
           }
@@ -25,107 +24,85 @@
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1"
-          >Sistema</label
-        >
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Sistema</label>
         <input
           formControlName="sistema"
           placeholder="Ej: Correo, ERP, VPN"
-          class="w-full h-10 px-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-400"
+          class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent dark:border-gray-700 dark:bg-gray-800 dark:text-white"
         />
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1"
-          >Tipo acceso</label
-        >
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tipo acceso</label>
         <input
           formControlName="tipo_acceso"
           placeholder="Ej: Administrador, Lectura"
-          class="w-full h-10 px-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-400"
+          class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent dark:border-gray-700 dark:bg-gray-800 dark:text-white"
         />
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1"
-          >Usuario</label
-        >
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Usuario</label>
         <input
           formControlName="usuario"
           placeholder="usuario@empresa.com"
-          class="w-full h-10 px-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-400"
+          class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent dark:border-gray-700 dark:bg-gray-800 dark:text-white"
         />
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1"
-          >Contraseña</label
-        >
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Contraseña</label>
         <input
           formControlName="contrasena"
           type="password"
           placeholder="••••••••"
-          class="w-full h-10 px-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-400"
+          class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent dark:border-gray-700 dark:bg-gray-800 dark:text-white"
         />
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1"
-          >URL (opcional)</label
-        >
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">URL (opcional)</label>
         <input
           formControlName="url_acceso"
           placeholder="https://..."
-          class="w-full h-10 px-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-400"
+          class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent dark:border-gray-700 dark:bg-gray-800 dark:text-white"
         />
       </div>
 
       <div class="md:col-span-3">
-        <label class="block text-sm font-medium text-gray-700 mb-1"
-          >Notas</label
-        >
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Notas</label>
         <input
           formControlName="notas"
           placeholder="Instrucciones adicionales..."
-          class="w-full h-10 px-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-400"
+          class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent dark:border-gray-700 dark:bg-gray-800 dark:text-white"
         />
       </div>
 
-      <div class="md:col-span-3 text-right mt-2">
+      <div class="md:col-span-3 flex justify-end mt-2">
         <button
           type="submit"
-          [disabled]="isLoading()"
-          class="inline-flex items-center gap-2 px-6 py-2 bg-brand-500 text-white font-medium rounded-lg hover:bg-brand-600 disabled:opacity-50 transition-colors shadow-sm"
+          [disabled]="credForm.invalid || isLoading()"
+          class="inline-flex items-center gap-2 px-5 py-2 text-sm font-medium text-white bg-brand-500 rounded-lg hover:bg-brand-600 disabled:opacity-50 transition"
         >
+          @if (isLoading()) {
+            <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+          }
           {{ isLoading() ? "Guardando..." : "Agregar Credencial" }}
         </button>
       </div>
     </form>
   </div>
 
-  <div
-    class="mb-4 flex flex-col sm:flex-row gap-3 items-center justify-between"
-  >
+  <div class="mb-4 flex flex-col sm:flex-row gap-3 items-center justify-between">
     <div class="relative w-full sm:w-2/3">
-      <div
-        class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
-      >
-        <svg
-          class="h-5 w-5 text-gray-400"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-            clip-rule="evenodd"
-          />
+      <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+        <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
         </svg>
       </div>
       <input
         placeholder="Filtrar por empleado o usuario..."
-        class="w-full h-10 pl-10 pr-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-400 shadow-sm"
+        class="w-full h-10 pl-10 pr-4 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent dark:border-gray-700 dark:bg-gray-900 dark:text-white"
         [value]="filterName()"
         (input)="filterName.set($any($event.target).value); currentPage.set(1)"
       />
@@ -135,151 +112,92 @@
       <button
         (click)="exportarExcel()"
         [disabled]="filteredCredenciales().length === 0"
-        class="inline-flex items-center justify-center gap-2 px-3 py-2 bg-green-50 text-green-700 border border-green-200 rounded-lg hover:bg-green-100 transition-colors text-sm font-medium shadow-sm w-full sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed"
+        class="inline-flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-700 hover:bg-green-100 rounded-md transition-colors text-sm font-medium disabled:opacity-50"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-4 w-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-          />
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
         <span class="hidden sm:inline">Excel</span>
       </button>
 
       <button
         (click)="exportarPdf()"
         [disabled]="filteredCredenciales().length === 0"
-        class="inline-flex items-center justify-center gap-2 px-3 py-2 bg-red-50 text-red-700 border border-red-200 rounded-lg hover:bg-red-100 transition-colors text-sm font-medium shadow-sm w-full sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed"
+        class="inline-flex items-center gap-2 px-3 py-1.5 bg-red-50 text-red-700 hover:bg-red-100 rounded-md transition-colors text-sm font-medium disabled:opacity-50"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-4 w-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
-          />
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
         <span class="hidden sm:inline">PDF</span>
       </button>
     </div>
   </div>
 
   @if (isLoading() && credenciales().length === 0) {
-    <div class="p-8 text-center text-gray-500">
-      Cargando bóveda de credenciales...
-    </div>
+    <div class="py-8 text-center text-gray-500">Cargando bóveda de credenciales...</div>
   } @else {
-    <div
-      class="overflow-hidden bg-white rounded-lg shadow-sm border border-gray-200"
-    >
+    <div class="overflow-hidden bg-white dark:bg-gray-900 rounded-xl shadow-theme-sm border border-gray-200 dark:border-gray-800">
       <div class="overflow-x-auto">
         <table class="min-w-full text-left border-collapse">
-          <thead class="bg-gray-50 border-b border-gray-200">
+          <thead class="bg-gray-50 dark:bg-gray-800/50">
             <tr>
-              <th
-                class="px-4 py-3 text-xs font-bold text-gray-600 uppercase tracking-wider"
-              >
-                Empleado
-              </th>
-              <th
-                class="px-4 py-3 text-xs font-bold text-gray-600 uppercase tracking-wider"
-              >
-                Sistema / Tipo
-              </th>
-              <th
-                class="px-4 py-3 text-xs font-bold text-gray-600 uppercase tracking-wider"
-              >
-                Usuario
-              </th>
-              <th
-                class="px-4 py-3 text-xs font-bold text-gray-600 uppercase tracking-wider"
-              >
-                Contraseña
-              </th>
-              <th
-                class="px-4 py-3 text-xs font-bold text-gray-600 uppercase tracking-wider"
-              >
-                URL / Notas
-              </th>
+              <th class="px-5 py-4 text-sm font-semibold text-gray-600 dark:text-gray-300">Empleado</th>
+              <th class="px-5 py-4 text-sm font-semibold text-gray-600 dark:text-gray-300">Sistema / Tipo</th>
+              <th class="px-5 py-4 text-sm font-semibold text-gray-600 dark:text-gray-300">Usuario</th>
+              <th class="px-5 py-4 text-sm font-semibold text-gray-600 dark:text-gray-300">Contraseña</th>
+              <th class="px-5 py-4 text-sm font-semibold text-gray-600 dark:text-gray-300">URL / Notas</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-gray-100">
+          <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
             @for (c of paginatedCredenciales(); track c.id) {
-              <tr class="hover:bg-gray-50 transition-colors">
-                <td class="px-4 py-3 text-sm font-medium text-gray-800">
-                  {{ c.empleados?.nombre_completo || "-" }}
-                </td>
-                <td class="px-4 py-3">
-                  <div class="text-sm font-bold text-gray-700">
-                    {{ c.sistema }}
+              <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition">
+                <td class="px-5 py-4 text-sm font-medium text-gray-800 dark:text-gray-200">
+                  <div class="flex items-center gap-3">
+                    <div class="h-8 w-8 rounded-full bg-brand-100 text-brand-600 flex items-center justify-center text-xs font-bold">{{ (c.empleados?.nombre_completo || 'S A').substring(0, 2).toUpperCase() }}</div>
+                    <span>{{ c.empleados?.nombre_completo || "Sin Asignar" }}</span>
                   </div>
-                  <div class="text-xs text-gray-500">{{ c.tipo_acceso }}</div>
                 </td>
-                <td class="px-4 py-3">
+                <td class="px-5 py-4">
+                  <div class="text-sm font-bold text-gray-800 dark:text-white">{{ c.sistema }}</div>
+                  <div class="text-xs text-gray-500 dark:text-gray-400">{{ c.tipo_acceso }}</div>
+                </td>
+                <td class="px-5 py-4">
                   <input
-                    class="w-full text-sm rounded border border-transparent hover:border-gray-300 focus:border-brand-400 focus:ring-1 focus:ring-brand-400 px-2 py-1 bg-transparent focus:bg-white transition-all"
+                    class="w-full text-sm rounded-md border border-transparent hover:border-gray-300 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 px-2 py-1.5 bg-transparent focus:bg-white dark:text-gray-300 dark:hover:border-gray-600 dark:focus:bg-gray-800 transition-all"
                     [value]="c.usuario"
-                    (blur)="
-                      onFieldUpdate(c.id, {
-                        usuario: $any($event.target).value,
-                      })
-                    "
+                    (blur)="onFieldUpdate(c.id, { usuario: $any($event.target).value })"
                   />
                 </td>
-                <td class="px-4 py-3">
+                <td class="px-5 py-4">
                   <div class="flex items-center gap-1">
                     <input
                       [type]="showPasswords()[c.id] ? 'text' : 'password'"
-                      class="flex-1 text-sm rounded border border-transparent hover:border-gray-300 focus:border-brand-400 focus:ring-1 focus:ring-brand-400 px-2 py-1 bg-transparent focus:bg-white transition-all font-mono"
+                      class="flex-1 text-sm rounded-md border border-transparent hover:border-gray-300 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 px-2 py-1.5 bg-transparent focus:bg-white dark:text-gray-300 dark:hover:border-gray-600 dark:focus:bg-gray-800 transition-all font-mono"
                       [value]="c.contrasena"
-                      (blur)="
-                        onFieldUpdate(c.id, {
-                          contrasena: $any($event.target).value,
-                        })
-                      "
+                      (blur)="onFieldUpdate(c.id, { contrasena: $any($event.target).value })"
                     />
                     <button
                       type="button"
-                      class="p-1.5 text-gray-400 hover:text-gray-600 rounded bg-gray-100 hover:bg-gray-200 transition-colors"
+                      class="p-1.5 text-gray-400 hover:text-gray-600 rounded bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 transition-colors"
                       (click)="toggleShow(c.id)"
                       [title]="showPasswords()[c.id] ? 'Ocultar' : 'Mostrar'"
                     >
-                      {{ showPasswords()[c.id] ? "👁️" : "🙈" }}
+                      @if (showPasswords()[c.id]) {
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" /></svg>
+                      } @else {
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                      }
                     </button>
                   </div>
                 </td>
-                <td class="px-4 py-3 space-y-1">
+                <td class="px-5 py-4 space-y-1">
                   <input
-                    class="w-full text-xs rounded border border-transparent hover:border-gray-300 focus:border-brand-400 focus:ring-1 focus:ring-brand-400 px-2 py-1 bg-transparent focus:bg-white transition-all"
+                    class="w-full text-xs rounded-md border border-transparent hover:border-gray-300 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 px-2 py-1 bg-transparent focus:bg-white dark:text-gray-300 dark:hover:border-gray-600 dark:focus:bg-gray-800 transition-all"
                     [value]="c.url_acceso || ''"
                     placeholder="URL..."
-                    (blur)="
-                      onFieldUpdate(c.id, {
-                        url_acceso: $any($event.target).value,
-                      })
-                    "
+                    (blur)="onFieldUpdate(c.id, { url_acceso: $any($event.target).value })"
                   />
                   <input
-                    class="w-full text-xs rounded border border-transparent hover:border-gray-300 focus:border-brand-400 focus:ring-1 focus:ring-brand-400 px-2 py-1 bg-transparent focus:bg-white transition-all text-gray-500"
+                    class="w-full text-xs rounded-md border border-transparent hover:border-gray-300 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 px-2 py-1 bg-transparent focus:bg-white dark:text-gray-500 dark:hover:border-gray-600 dark:focus:bg-gray-800 transition-all text-gray-500"
                     [value]="c.notas || ''"
                     placeholder="Notas..."
-                    (blur)="
-                      onFieldUpdate(c.id, { notas: $any($event.target).value })
-                    "
+                    (blur)="onFieldUpdate(c.id, { notas: $any($event.target).value })"
                   />
                 </td>
               </tr>
@@ -288,32 +206,24 @@
         </table>
       </div>
 
-      <div
-        class="flex items-center justify-between px-4 py-3 border-t border-gray-200 bg-gray-50 sm:px-6"
-      >
-        <div class="hidden sm:block">
-          <p class="text-sm text-gray-700">
-            Página <span class="font-bold">{{ currentPage() }}</span> de
-            <span class="font-bold">{{ totalPages() || 1 }}</span>
-            <span class="mx-2 text-gray-300">|</span>
-            Resultados:
-            <span class="font-bold text-brand-600">{{
-              filteredCredenciales().length
-            }}</span>
-          </p>
-        </div>
+      <div class="flex items-center justify-between px-5 py-3 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
+        <p class="text-sm text-gray-500 dark:text-gray-400">
+          Página <span class="font-medium">{{ currentPage() }}</span> de <span class="font-medium">{{ totalPages() || 1 }}</span>
+          <span class="mx-2 text-gray-300 dark:text-gray-600">|</span>
+          Resultados: <span class="font-medium text-brand-600 dark:text-brand-400">{{ filteredCredenciales().length }}</span>
+        </p>
         <div class="flex gap-2">
           <button
             (click)="prevPage()"
             [disabled]="currentPage() === 1"
-            class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm transition-all"
+            class="px-3 py-1.5 text-sm font-medium border border-gray-200 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
           >
             Anterior
           </button>
           <button
             (click)="nextPage()"
             [disabled]="currentPage() >= totalPages() || totalPages() === 0"
-            class="px-4 py-2 text-sm font-medium text-white bg-brand-500 border border-transparent rounded-md hover:bg-brand-600 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm transition-all"
+            class="px-3 py-1.5 text-sm font-medium border border-gray-200 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
           >
             Siguiente
           </button>
