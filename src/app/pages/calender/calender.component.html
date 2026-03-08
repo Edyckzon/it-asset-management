@@ -11,16 +11,16 @@
     <div class="flex flex-col px-2 overflow-y-auto custom-scrollbar">
       <div>
         <h5 class="mb-2 font-semibold text-gray-800 modal-title text-theme-xl dark:text-white/90 lg:text-2xl">
-          {{ selectedEvent ? 'Edit Event' : 'Add Event' }}
+          {{ selectedEvent ? 'Editar Evento' : 'Agregar Evento' }}
         </h5>
         <p class="text-sm text-gray-500 dark:text-gray-400">
-          Plan your next big moment: schedule or edit an event to stay on track
+          Planea tu próximo gran momento: programa o edita un evento para mantenerte al día
         </p>
       </div>
       <div class="mt-8">
         <div>
           <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-            Event Title
+            Título del Evento
           </label>
           <input
             id="event-title"
@@ -33,7 +33,7 @@
 
       <div class="mt-6">
         <label class="block mb-4 text-sm font-medium text-gray-700 dark:text-gray-400">
-          Event Color
+          Color del Evento
         </label>
         <div class="flex flex-wrap items-center gap-4 sm:gap-5">
           @for (entry of (calendarsEvents | keyvalue); track $index) {
@@ -74,7 +74,7 @@
 
       <div class="mt-6">
         <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-          Enter Start Date
+          Ingresa Fecha de Inicio
         </label>
         <input
           id="event-start-date"
@@ -86,7 +86,7 @@
 
       <div class="mt-6">
         <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-          Enter End Date
+          Ingresa Fecha de Fin
         </label>
         <input
           id="event-end-date"
@@ -102,14 +102,14 @@
           type="button"
           class="flex w-full justify-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 sm:w-auto"
         >
-          Close
+          Cerrar
         </button>
         <button
           (click)="handleAddOrUpdateEvent()"
           type="button"
           class="btn btn-success btn-update-event flex w-full justify-center rounded-lg bg-brand-500 px-4 py-2.5 text-sm font-medium text-white hover:bg-brand-600 sm:w-auto"
         >
-          {{ selectedEvent ? 'Update Changes' : 'Add Event' }}
+          {{ selectedEvent ? 'Actualizar Cambios' : 'Agregar Evento' }}
         </button>
       </div>
     </div>
