@@ -55,6 +55,18 @@ export class AppSidebarComponent {
         { name: "Historial Mov.", path: "/inventario/historial" },
       ],
     },
+    {
+      icon: `<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 18C21.1046 18 22 17.1046 22 16C22 14.8954 21.1046 14 20 14C18.8954 14 18 14.8954 18 16C18 17.1046 18.8954 18 20 18Z" stroke="currentColor" stroke-width="2"/><path d="M4 18C5.10457 18 6 17.1046 6 16C6 14.8954 5.10457 14 4 14C2.89543 14 2 14.8954 2 16C2 17.1046 2.89543 18 4 18Z" stroke="currentColor" stroke-width="2"/><path d="M12 10C13.1046 10 14 9.10457 14 8C14 6.89543 13.1046 6 12 6C10.8954 6 10 6.89543 10 8C10 9.10457 10.8954 10 12 10Z" stroke="currentColor" stroke-width="2"/><path d="M12 10V14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 22V21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M2 22H22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 14C7 14 6 16 6 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 14C17 14 18 16 18 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+      name: "Network",
+      subItems: [
+        { name: "Active Directory", path: "/network/acusers"},
+        { name: "Servidores & NAS", path: "/network/servers", new: true  },
+        { name: "DNS & Dominios", path: "/network/domains", new: true  },
+        { name: "Túneles & VPN", path: "/network/tunnels", new: true  },
+        { name: "Mapa de Red", path: "/network/map", new: true },
+      ],
+    },
+
     /* === MÓDULOS DE LA PLANTILLA OCULTOS POR AHORA ===
     ,
     {

@@ -90,6 +90,16 @@ export const routes: Routes = [
         title: "Inventario - Historial de Movimientos",
       },
 
+      // --- MÓDULO RED ---
+      {
+        path: "network/acusers",
+        title: "Usuarios AD | OSZ Smart Hub",
+        loadComponent: () =>
+          import("./pages/network/ac-users/ac-users.component").then(
+            (m) => m.AcUsersComponent,
+          ),
+      },
+
       /* === RUTAS DE LA PLANTILLA COMENTADAS ===
       { path: "calendar", component: CalenderComponent, title: "Calendar" },
       { path: "profile", component: ProfileComponent, title: "Profile" },

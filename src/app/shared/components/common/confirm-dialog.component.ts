@@ -8,13 +8,18 @@ import { Subscription } from 'rxjs';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div *ngIf="visible()" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div class="bg-white rounded-lg p-4 w-96">
-        <div class="text-lg font-semibold mb-2">Confirmar</div>
-        <div class="mb-4">{{ message() }}</div>
-        <div class="flex justify-end gap-2">
-          <button (click)="cancel()" class="px-3 py-1 rounded bg-gray-200">Cancelar</button>
-          <button (click)="ok()" class="px-3 py-1 rounded bg-red-600 text-white">Eliminar</button>
+    <div *ngIf="visible()" class="fixed inset-0 z-[99999] flex items-center justify-center bg-black/50 backdrop-blur-sm">
+      <div class="bg-white dark:bg-gray-900 border border-transparent dark:border-gray-800 rounded-xl p-6 w-[26rem] shadow-xl">
+        <div class="text-xl font-bold mb-3 text-gray-900 dark:text-white">Confirmar Acción</div>
+        <div class="mb-6 text-sm text-gray-600 dark:text-gray-300">{{ message() }}</div>
+        
+        <div class="flex justify-end gap-3">
+          <button (click)="cancel()" class="px-4 py-2 text-sm font-medium rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 transition">
+            Cancelar
+          </button>
+          <button (click)="ok()" class="px-4 py-2 text-sm font-medium rounded-lg bg-brand-600 text-white hover:bg-brand-700 transition">
+            Confirmar
+          </button>
         </div>
       </div>
     </div>
