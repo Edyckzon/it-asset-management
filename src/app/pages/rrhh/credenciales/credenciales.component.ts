@@ -31,6 +31,22 @@ export class CredencialesComponent implements OnInit {
 
   filterName = signal("");
 
+  // Estado de edición (Patrón Cargar en Formulario)
+  credencialEnEdicion = signal<any | null>(null);
+
+  // Control para mostrar/ocultar contraseñas en la tabla
+  showPasswords = signal<Record<string, boolean>>({});
+
+  credForm = this.fb.group({
+    empleado_id: ["", [Validators.required]],
+    sistema: ["", [Validators.required]],
+    tipo_acceso: ["", [Validators.required]],
+    usuario: ["", [Validators.required]],
+    contrasena: ["", [Validators.required]],
+    url_acceso: [""],
+    notas: [""],
+  });
+
   // Lista filtrada por la búsqueda
   filteredCredenciales = computed(() => {
     const q = this.filterName().toLowerCase().trim();
@@ -38,13 +54,14 @@ export class CredencialesComponent implements OnInit {
     return this.credenciales().filter((c) => {
       const nombre = (c.empleados?.nombre_completo || "").toLowerCase();
       const usuario = (c.usuario || "").toLowerCase();
-      return nombre.includes(q) || usuario.includes(q);
+      const sistema = (c.sistema || "").toLowerCase();
+      return nombre.includes(q) || usuario.includes(q) || sistema.includes(q);
     });
   });
 
   // --- LÓGICA DE PAGINACIÓN ---
   currentPage = signal<number>(1);
-  itemsPerPage = signal<number>(5);
+  itemsPerPage = signal<number>(10); // 20 registros por página
 
   paginatedCredenciales = computed(() => {
     const page = this.currentPage();
@@ -54,7 +71,7 @@ export class CredencialesComponent implements OnInit {
   });
 
   totalPages = computed(() =>
-    Math.ceil(this.filteredCredenciales().length / this.itemsPerPage()),
+    Math.ceil(this.filteredCredenciales().length / this.itemsPerPage()) || 1
   );
 
   nextPage() {
@@ -68,52 +85,6 @@ export class CredencialesComponent implements OnInit {
       this.currentPage.update((p) => p - 1);
     }
   }
-  // -----------------------------
-
-  // --- MÉTODOS DE EXPORTACIÓN ---
-
-  // Función "limpiadora" para las credenciales
-  private getDatosLimpios() {
-    // Tomamos la lista FILTRADA para que exporte solo lo que se buscó
-    return this.filteredCredenciales().map((cred) => ({
-      Empleado: cred.empleados?.nombre_completo || "Sin Asignar",
-      Sistema: cred.sistema,
-      "Tipo de Acceso": cred.tipo_acceso,
-      Usuario: cred.usuario,
-      Contraseña: cred.contrasena, // Cuidado con exportar contraseñas en entornos reales!
-      URL: cred.url_acceso || "N/A",
-      Notas: cred.notas || "N/A",
-    }));
-  }
-
-  exportarExcel() {
-    const dataLimpia = this.getDatosLimpios();
-    this.exportSvc.exportToExcel(dataLimpia, "Reporte_Credenciales");
-    this.toast.success("Bóveda exportada a Excel");
-  }
-
-  exportarPdf() {
-    const dataLimpia = this.getDatosLimpios();
-    this.exportSvc.exportToPdf(
-      dataLimpia,
-      "Reporte_Credenciales",
-      "Bóveda de Credenciales y Accesos TI",
-    );
-    this.toast.success("Bóveda exportada a PDF");
-  }
-  // ---------------------------------
-
-  showPasswords = signal<Record<string, boolean>>({});
-
-  credForm = this.fb.group({
-    empleado_id: ["", [Validators.required]],
-    sistema: ["", [Validators.required]],
-    tipo_acceso: ["", [Validators.required]],
-    usuario: ["", [Validators.required]],
-    contrasena: ["", [Validators.required]],
-    url_acceso: [""],
-    notas: [""],
-  });
 
   async ngOnInit(): Promise<void> {
     await this.loadData();
@@ -121,7 +92,6 @@ export class CredencialesComponent implements OnInit {
       const u = await this.supabase.getUser();
       this.userId = u?.id ?? null;
     } catch (err) {
-      console.warn("No se pudo obtener usuario para auditoría", err);
       this.userId = null;
     }
   }
@@ -137,61 +107,119 @@ export class CredencialesComponent implements OnInit {
       this.credenciales.set(creds);
     } catch (err) {
       console.error("Error cargando credenciales", err);
+      this.toast.error("Error al cargar los datos");
     } finally {
       this.isLoading.set(false);
     }
   }
 
-  async onAdd() {
+  // --- LÓGICA DE FORMULARIO (CREAR Y ACTUALIZAR) ---
+  async onSubmit() {
     if (this.credForm.invalid) return;
     this.isLoading.set(true);
+    
     try {
       const payload = this.credForm.value as Partial<Credencial>;
-      const created = await this.rrhh.createCredencial(payload);
+      const editando = this.credencialEnEdicion();
 
-      this.credenciales.update((c) => [created, ...c]);
-      this.credForm.reset();
-      this.toast.success("Credencial creada correctamente");
+      if (editando) {
+        // ACTUALIZAR
+        const updated = await this.rrhh.updateCredencial(editando.id, payload);
+        this.credenciales.update((list) =>
+          list.map((c) => (c.id === editando.id ? updated : c))
+        );
+        this.toast.success("Credencial actualizada correctamente");
+        
+        try {
+          await this.historial.registrar(
+            "credenciales", editando.id, "actualizacion",
+            `Se actualizó la credencial del sistema ${updated.sistema}`,
+            this.userId ?? undefined
+          );
+        } catch (e) {}
 
-      this.currentPage.set(1);
+      } else {
+        // CREAR
+        const created = await this.rrhh.createCredencial(payload);
+        this.credenciales.update((c) => [created, ...c]);
+        this.toast.success("Credencial creada correctamente");
+        this.currentPage.set(1);
+      }
+
+      this.cancelarEdicion();
     } catch (err) {
-      console.error("Error creating credencial", err);
-      this.toast.error("Error al crear credencial");
+      console.error("Error guardando credencial", err);
+      this.toast.error("Error al procesar la solicitud");
     } finally {
       this.isLoading.set(false);
     }
+  }
+
+  // --- INTERACCIÓN DE UI ---
+  editar(cred: any) {
+    this.credencialEnEdicion.set(cred);
+    this.credForm.patchValue({
+      empleado_id: cred.empleado_id,
+      sistema: cred.sistema,
+      tipo_acceso: cred.tipo_acceso,
+      usuario: cred.usuario,
+      contrasena: cred.contrasena,
+      url_acceso: cred.url_acceso,
+      notas: cred.notas
+    });
+    // Sube suavemente para que el usuario vea el formulario
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  cancelarEdicion() {
+    this.credencialEnEdicion.set(null);
+    this.credForm.reset({ empleado_id: "" });
   }
 
   toggleShow(id: string) {
     this.showPasswords.update((s) => ({ ...s, [id]: !s[id] }));
   }
 
-  async onFieldUpdate(id: string, cambios: Partial<Credencial>) {
-    try {
-      const updated = await this.rrhh.updateCredencial(id, cambios);
-      this.credenciales.update((list) =>
-        list.map((i) => (i.id === id ? updated : i)),
-      );
+  async onDelete(id: string) {
+    if (!confirm("¿Estás seguro de eliminar esta credencial?")) return;
 
-      try {
-        const campo = Object.keys(cambios)[0] || "campo";
-        const original =
-          this.credenciales().find((i) => i.id === id) || updated;
-        const sistema = original?.sistema || updated?.sistema || "";
-        await this.historial.registrar(
-          "credenciales",
-          id,
-          "actualizacion",
-          `Se actualizó ${campo} del sistema ${sistema}`,
-          this.userId ?? undefined,
-        );
-        this.toast.success("Credencial actualizada");
-      } catch (histErr) {
-        console.error("Error registrando historial de credencial", histErr);
-      }
+    try {
+      await this.rrhh.deleteCredencial(id);
+      this.credenciales.update((list) => list.filter((c) => c.id !== id));
+      this.toast.success("Credencial eliminada");
+
+      await this.historial.registrar(
+        "credenciales", id, "eliminacion",
+        `Se eliminó una credencial`, this.userId ?? undefined
+      );
     } catch (err) {
-      console.error("Error actualizando credencial", err);
-      this.toast.error("Error al actualizar credencial");
+      console.error("Error eliminando credencial", err);
+      this.toast.error("No se pudo eliminar la credencial");
     }
+  }
+
+  // --- EXPORTACIÓN ---
+  private getDatosLimpios() {
+    return this.filteredCredenciales().map((cred) => ({
+      Empleado: cred.empleados?.nombre_completo || "Sin Asignar",
+      Sistema: cred.sistema,
+      "Tipo de Acceso": cred.tipo_acceso,
+      Usuario: cred.usuario,
+      Contraseña: cred.contrasena, 
+      URL: cred.url_acceso || "N/A",
+      Notas: cred.notas || "N/A",
+    }));
+  }
+
+  exportarExcel() {
+    this.exportSvc.exportToExcel(this.getDatosLimpios(), "Reporte_Credenciales");
+    this.toast.success("Bóveda exportada a Excel");
+  }
+
+  exportarPdf() {
+    this.exportSvc.exportToPdf(
+      this.getDatosLimpios(), "Reporte_Credenciales", "Bóveda de Credenciales y Accesos"
+    );
+    this.toast.success("Bóveda exportada a PDF");
   }
 }

@@ -104,6 +104,15 @@ export class RrhhService {
     return data;
   }
 
+  // Elimina una credencial por id
+  async deleteCredencial(id: string): Promise<void> {
+    const { error } = await this.supabase
+      .from("credenciales")
+      .delete()
+      .eq("id", id);
+    if (error) throw error;
+  }
+
   // Elimina un empleado por id
   async deleteEmpleado(id: string): Promise<void> {
     const { error } = await this.supabase
