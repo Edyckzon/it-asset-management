@@ -12,12 +12,13 @@
       <!-- Empleado (Ocupa 2 columnas en desktop) -->
       <div class="lg:col-span-2">
         <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Empleado</label>
-        <select formControlName="empleado_id" class="w-full h-9 px-2.5 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent dark:border-gray-700 dark:bg-gray-800 dark:text-white text-sm transition-colors">
-          <option value="" disabled selected>-- Seleccionar --</option>
-          @for (e of empleados(); track e.id) {
-            <option [value]="e.id">{{ e.nombre_completo }}</option>
-          }
-        </select>
+        <app-searchable-select
+          formControlName="empleado_id"
+          [options]="empleadoOptions()"
+          placeholder="Seleccionar empleado"
+          searchPlaceholder="Escribe nombre, cargo..."
+          clearLabel="Sin empleado"
+        />
       </div>
 
       <!-- Sistema -->

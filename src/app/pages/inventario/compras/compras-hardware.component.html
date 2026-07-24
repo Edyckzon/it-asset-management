@@ -1,196 +1,229 @@
-<div class="max-w-6xl mx-auto p-4">
-  
-  <div class="bg-white dark:bg-gray-900 rounded-xl shadow-theme-sm border border-gray-200 dark:border-gray-800 p-5 mb-6">
-    <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">
-      Registrar Nuevo Lote de Hardware
-    </h3>
-
-    <form
-      [formGroup]="compraForm"
-      (ngSubmit)="onSubmit()"
-      class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end"
-    >
-      <div>
-        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Fecha compra</label>
-        <input
-          formControlName="fecha_compra"
-          type="date"
-          class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent dark:border-gray-700 dark:bg-gray-800 dark:text-white transition-all"
-        />
-      </div>
-      
-      <div>
-        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Proveedor</label>
-        <input
-          formControlName="proveedor"
-          type="text"
-          placeholder="Ej: TechStore, Dell"
-          class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent dark:border-gray-700 dark:bg-gray-800 dark:text-white transition-all"
-        />
-      </div>
-      
-      <div>
-        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tipo producto</label>
-        <input
-          formControlName="tipo_producto"
-          type="text"
-          placeholder="Laptop, Monitor, Disco SATA..."
-          class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent dark:border-gray-700 dark:bg-gray-800 dark:text-white transition-all"
-        />
+<div class="max-w-7xl mx-auto p-4 space-y-5">
+  <div class="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-5">
+    <section class="bg-white dark:bg-gray-900 rounded-xl shadow-theme-sm border border-gray-200 dark:border-gray-800 p-5">
+      <div class="mb-4">
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-white">
+          {{ compraEnEdicion() ? "Editar compra de hardware" : "Registrar compra de hardware" }}
+        </h3>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Registra lote, moneda, tipo de cambio, documento y comprobante.</p>
       </div>
 
-      <div>
-        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Marca / Modelo</label>
-        <input
-          formControlName="marca_modelo"
-          type="text"
-          placeholder="Ej: Dell XPS 13"
-          class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent dark:border-gray-700 dark:bg-gray-800 dark:text-white transition-all"
-        />
-      </div>
+      <form [formGroup]="compraForm" (ngSubmit)="onSubmit()" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Fecha</label>
+          <input formControlName="fecha_compra" type="date" class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+        </div>
 
-      <div>
-        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Cantidad</label>
-        <input
-          formControlName="cantidad"
-          type="number"
-          min="1"
-          placeholder="0"
-          class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent dark:border-gray-700 dark:bg-gray-800 dark:text-white transition-all"
-        />
-      </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Proveedor</label>
+          <input formControlName="proveedor" type="text" placeholder="Dell, Lenovo, TechStore" class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+        </div>
 
-      <div>
-        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Precio unitario ($)</label>
-        <div class="relative">
-          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400">$</span>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tipo producto</label>
+          <input formControlName="tipo_producto" type="text" placeholder="Laptop, monitor, memoria" class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Marca / Modelo</label>
+          <input formControlName="marca_modelo" type="text" placeholder="Latitude 5440, ThinkPad..." class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Cantidad</label>
+          <input formControlName="cantidad" type="number" min="1" class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Moneda</label>
+          <select formControlName="moneda" class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white">
+            <option value="USD">Dolares (USD)</option>
+            <option value="PEN">Soles (PEN)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Precio unitario</label>
+          <input formControlName="precio_unitario" type="number" step="0.01" min="0" class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tipo cambio</label>
+          <input formControlName="tipo_cambio" type="number" step="0.001" min="0.01" class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Documento</label>
+          <input formControlName="numero_documento" type="text" placeholder="Factura, boleta, OC" class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+        </div>
+
+        <div class="md:col-span-2 xl:col-span-3">
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Observaciones</label>
+          <input formControlName="observaciones" type="text" placeholder="Garantia, condiciones, contacto del proveedor..." class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+        </div>
+
+        <div class="md:col-span-2 xl:col-span-4">
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Comprobante / imagen <span class="font-normal text-gray-400">(opcional)</span></label>
           <input
-            formControlName="precio_unitario"
-            type="number"
-            step="0.01"
-            placeholder="0.00"
-            class="w-full h-10 pl-7 pr-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent dark:border-gray-700 dark:bg-gray-800 dark:text-white transition-all"
+            #comprobanteInput
+            type="file"
+            accept="image/png,image/jpeg,image/webp,application/pdf"
+            (change)="onFileSelected($event)"
+            class="block w-full rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-700 file:mr-4 file:h-10 file:border-0 file:bg-brand-50 file:px-4 file:text-sm file:font-medium file:text-brand-700 hover:file:bg-brand-100 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:file:bg-brand-500/10 dark:file:text-brand-400"
           />
+          @if (selectedFile()) {
+            <div class="mt-2 flex items-center justify-between gap-3 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 dark:border-gray-800 dark:bg-gray-800/50">
+              <p class="truncate text-xs text-gray-600 dark:text-gray-300">{{ selectedFile()?.name }}</p>
+              <button type="button" (click)="clearSelectedFile(comprobanteInput)" class="shrink-0 text-xs font-medium text-error-600 hover:text-error-700">
+                Quitar
+              </button>
+            </div>
+          } @else if (compraEnEdicion()?.comprobante_nombre) {
+            <div class="mt-2 flex items-center justify-between gap-3 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 dark:border-gray-800 dark:bg-gray-800/50">
+              <p class="truncate text-xs text-gray-600 dark:text-gray-300">Actual: {{ compraEnEdicion()?.comprobante_nombre }}</p>
+              <button type="button" (click)="deleteComprobante(compraEnEdicion()!)" class="shrink-0 text-xs font-medium text-error-600 hover:text-error-700">
+                Eliminar
+              </button>
+            </div>
+          }
+        </div>
+
+        <div class="md:col-span-2 xl:col-span-4 flex justify-end gap-3">
+          @if (compraEnEdicion()) {
+            <button type="button" (click)="cancelEdit()" class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-700">
+              Cancelar
+            </button>
+          }
+          <button type="submit" [disabled]="compraForm.invalid || isLoading()" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-medium text-white bg-brand-500 rounded-lg hover:bg-brand-600 disabled:opacity-50 shadow-sm">
+            {{ isLoading() ? "Guardando..." : (compraEnEdicion() ? "Guardar cambios" : "Registrar compra") }}
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <aside class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-4">
+      <div class="bg-white dark:bg-gray-900 rounded-xl shadow-theme-sm border border-gray-200 dark:border-gray-800 p-5">
+        <p class="text-sm text-gray-500 dark:text-gray-400">Total filtrado USD</p>
+        <p class="text-2xl font-semibold text-gray-900 dark:text-white mt-2">{{ formatMoney(totals().usd, "USD") }}</p>
+      </div>
+      <div class="bg-white dark:bg-gray-900 rounded-xl shadow-theme-sm border border-gray-200 dark:border-gray-800 p-5">
+        <p class="text-sm text-gray-500 dark:text-gray-400">Total filtrado PEN</p>
+        <p class="text-2xl font-semibold text-gray-900 dark:text-white mt-2">{{ formatMoney(totals().pen, "PEN") }}</p>
+      </div>
+      <div class="bg-white dark:bg-gray-900 rounded-xl shadow-theme-sm border border-gray-200 dark:border-gray-800 p-5">
+        <p class="text-sm text-gray-500 dark:text-gray-400">Registros visibles</p>
+        <p class="text-2xl font-semibold text-gray-900 dark:text-white mt-2">{{ filteredCompras().length }}</p>
+      </div>
+    </aside>
+  </div>
+
+  <section class="bg-white dark:bg-gray-900 rounded-xl shadow-theme-sm border border-gray-200 dark:border-gray-800">
+    <div class="p-5 border-b border-gray-200 dark:border-gray-800">
+      <div class="grid grid-cols-1 gap-3 2xl:grid-cols-[minmax(320px,1fr)_auto] 2xl:items-center">
+        <input [value]="searchTerm()" (input)="onSearch($any($event.target).value)" placeholder="Buscar por proveedor, producto, modelo o documento..." class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+
+        <div class="grid grid-cols-2 gap-2 sm:grid-cols-[150px_220px_110px_112px_88px_78px]">
+          <select [value]="currencyFilter()" (change)="onCurrencyFilter($any($event.target).value)" class="h-10 w-full px-3 rounded-lg border border-gray-300 bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-white">
+            <option value="TODAS">Todas monedas</option>
+            <option value="USD">USD</option>
+            <option value="PEN">PEN</option>
+          </select>
+
+          <select [value]="providerFilter()" (change)="onProviderFilter($any($event.target).value)" class="h-10 w-full px-3 rounded-lg border border-gray-300 bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-white">
+            <option value="TODOS">Todos proveedores</option>
+            @for (provider of providers(); track provider) {
+              <option [value]="provider">{{ provider }}</option>
+            }
+          </select>
+
+          <select [value]="itemsPerPage()" (change)="onItemsPerPage($any($event.target).value)" class="h-10 w-full px-3 rounded-lg border border-gray-300 bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-white">
+            <option value="8">8 filas</option>
+            <option value="15">15 filas</option>
+            <option value="30">30 filas</option>
+          </select>
+
+          <button (click)="resetFilters()" class="inline-flex h-10 w-full items-center justify-center rounded-lg border border-gray-200 px-3 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800">Limpiar</button>
+          <button (click)="exportarExcel()" [disabled]="filteredCompras().length === 0" class="inline-flex h-10 w-full items-center justify-center rounded-lg bg-green-50 px-4 text-sm font-medium text-green-700 hover:bg-green-100 disabled:opacity-50">Excel</button>
+          <button (click)="exportarPdf()" [disabled]="filteredCompras().length === 0" class="inline-flex h-10 w-full items-center justify-center rounded-lg bg-red-50 px-4 text-sm font-medium text-red-700 hover:bg-red-100 disabled:opacity-50">PDF</button>
         </div>
       </div>
-
-      <div class="md:col-span-3 flex justify-end mt-2">
-        <button
-          type="submit"
-          [disabled]="compraForm.invalid || isLoading()"
-          class="inline-flex items-center gap-2 px-5 py-2 text-sm font-medium text-white bg-brand-500 rounded-lg hover:bg-brand-600 disabled:opacity-50 transition-colors"
-        >
-          @if (isLoading()) {
-            <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-          } @else {
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
-          }
-          {{ isLoading() ? "Guardando..." : "Registrar Compra" }}
-        </button>
-      </div>
-    </form>
-  </div>
-
-  <div class="flex justify-end gap-3 mb-4">
-    <button
-      (click)="exportarExcel()"
-      [disabled]="compras().length === 0"
-      class="inline-flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-700 hover:bg-green-100 rounded-md transition-colors text-sm font-medium disabled:opacity-50"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-      </svg>
-      Excel
-    </button>
-    <button
-      (click)="exportarPdf()"
-      [disabled]="compras().length === 0"
-      class="inline-flex items-center gap-2 px-3 py-1.5 bg-red-50 text-red-700 hover:bg-red-100 rounded-md transition-colors text-sm font-medium disabled:opacity-50"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-      </svg>
-      PDF
-    </button>
-  </div>
-
-  @if (isLoading() && compras().length === 0) {
-    <div class="py-10 text-center text-gray-500 dark:text-gray-400">
-      Cargando registro de compras...
     </div>
-  } @else {
-    <div class="overflow-hidden bg-white dark:bg-gray-900 rounded-xl shadow-theme-sm border border-gray-200 dark:border-gray-800">
+
+    @if (isLoading() && compras().length === 0) {
+      <div class="py-10 text-center text-gray-500 dark:text-gray-400">Cargando compras...</div>
+    } @else {
       <div class="overflow-x-auto">
         <table class="min-w-full text-left border-collapse">
           <thead class="bg-gray-50 dark:bg-gray-800/50">
             <tr>
-              <th class="px-5 py-4 text-sm font-semibold text-gray-600 dark:text-gray-300">Fecha</th>
-              <th class="px-5 py-4 text-sm font-semibold text-gray-600 dark:text-gray-300">Proveedor</th>
-              <th class="px-5 py-4 text-sm font-semibold text-gray-600 dark:text-gray-300">Producto</th>
-              <th class="px-5 py-4 text-sm font-semibold text-gray-600 dark:text-gray-300 text-center">Cantidad</th>
-              <th class="px-5 py-4 text-sm font-semibold text-gray-600 dark:text-gray-300 text-right">Precio Unit.</th>
-              <th class="px-5 py-4 text-sm font-semibold text-gray-600 dark:text-gray-300 text-right">Total</th>
+              <th class="px-5 py-4 text-xs font-bold text-gray-600 dark:text-gray-300 uppercase">Fecha</th>
+              <th class="px-5 py-4 text-xs font-bold text-gray-600 dark:text-gray-300 uppercase">Proveedor</th>
+              <th class="px-5 py-4 text-xs font-bold text-gray-600 dark:text-gray-300 uppercase">Producto</th>
+              <th class="px-5 py-4 text-xs font-bold text-gray-600 dark:text-gray-300 uppercase text-center">Cantidad</th>
+              <th class="px-5 py-4 text-xs font-bold text-gray-600 dark:text-gray-300 uppercase text-right">Precio</th>
+              <th class="px-5 py-4 text-xs font-bold text-gray-600 dark:text-gray-300 uppercase text-right">Total</th>
+              <th class="px-5 py-4 text-xs font-bold text-gray-600 dark:text-gray-300 uppercase text-center">Archivo</th>
+              <th class="px-5 py-4 text-xs font-bold text-gray-600 dark:text-gray-300 uppercase text-center">Acciones</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
             @for (c of paginatedCompras(); track c.id) {
               <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition">
-                <td class="px-5 py-4 text-sm text-gray-500 dark:text-gray-400">
-                  {{ c.fecha_compra | date: "dd/MM/yyyy" }}
-                </td>
-                <td class="px-5 py-4 text-sm text-gray-800 dark:text-gray-200 font-medium">
-                  {{ c.proveedor }}
+                <td class="px-5 py-4 text-sm text-gray-500 dark:text-gray-400">{{ c.fecha_compra | date: "dd/MM/yyyy" }}</td>
+                <td class="px-5 py-4">
+                  <div class="text-sm font-semibold text-gray-800 dark:text-gray-100">{{ c.proveedor }}</div>
+                  <div class="text-xs text-gray-500 dark:text-gray-400">{{ c.numero_documento || "Sin documento" }}</div>
                 </td>
                 <td class="px-5 py-4">
                   <div class="text-sm font-medium text-gray-800 dark:text-white">{{ c.tipo_producto }}</div>
                   <div class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ c.marca_modelo }}</div>
                 </td>
                 <td class="px-5 py-4 text-center">
-                  <span class="px-2.5 py-1 bg-brand-50 text-brand-600 border border-brand-200 rounded-full text-xs font-bold dark:bg-brand-500/10 dark:border-brand-500/20 dark:text-brand-400">
-                    {{ c.cantidad }} unid.
-                  </span>
+                  <span class="px-2.5 py-1 bg-brand-50 text-brand-600 border border-brand-200 rounded-full text-xs font-bold dark:bg-brand-500/10 dark:border-brand-500/20 dark:text-brand-400">{{ c.cantidad }} unid.</span>
                 </td>
                 <td class="px-5 py-4 text-sm text-gray-600 dark:text-gray-400 text-right font-mono">
-                  {{ c.precio_unitario | currency }}
+                  <div>{{ formatMoney(c.precio_unitario, c.moneda || "USD") }}</div>
+                  <div class="text-xs text-gray-400">TC {{ c.tipo_cambio || 1 }}</div>
                 </td>
                 <td class="px-5 py-4 text-sm text-gray-800 dark:text-gray-200 font-bold text-right font-mono">
-                  {{ c.cantidad * c.precio_unitario | currency }}
+                  {{ formatMoney(totalCompra(c), c.moneda || "USD") }}
+                </td>
+                <td class="px-5 py-4 text-center">
+                  @if (c.comprobante_path) {
+                    <div class="flex items-center justify-center gap-2">
+                      <button type="button" (click)="openComprobante(c)" class="inline-flex items-center justify-center rounded-md bg-brand-50 px-3 py-1.5 text-xs font-medium text-brand-700 hover:bg-brand-100 dark:bg-brand-500/10 dark:text-brand-400">
+                        Ver
+                      </button>
+                      <button type="button" (click)="deleteComprobante(c)" class="inline-flex items-center justify-center rounded-md bg-error-50 px-3 py-1.5 text-xs font-medium text-error-700 hover:bg-error-100 dark:bg-error-500/10 dark:text-error-400">
+                        Borrar
+                      </button>
+                    </div>
+                  } @else {
+                    <span class="text-xs text-gray-400">Sin archivo</span>
+                  }
+                </td>
+                <td class="px-5 py-4 text-center">
+                  <button type="button" (click)="startEdit(c)" class="text-sm font-medium text-brand-500 hover:text-brand-700 dark:text-brand-400">
+                    Editar
+                  </button>
                 </td>
               </tr>
             } @empty {
               <tr>
-                <td colspan="6" class="px-5 py-8 text-center text-sm text-gray-500 dark:text-gray-400">
-                  No hay compras registradas.
-                </td>
+                <td colspan="8" class="px-5 py-8 text-center text-sm text-gray-500 dark:text-gray-400">No hay compras con esos filtros.</td>
               </tr>
             }
           </tbody>
         </table>
       </div>
 
-      <div class="flex items-center justify-between px-5 py-3 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
-        <p class="text-sm text-gray-500 dark:text-gray-400">
-          Página <span class="font-medium">{{ currentPage() }}</span> de <span class="font-medium">{{ totalPages() || 1 }}</span>
-          <span class="mx-2 text-gray-300 dark:text-gray-600">|</span>
-          Total: <span class="font-medium text-brand-600 dark:text-brand-400">{{ compras().length }}</span> registros
-        </p>
+      <div class="flex items-center justify-between px-5 py-3 border-t border-gray-200 dark:border-gray-800">
+        <p class="text-sm text-gray-500 dark:text-gray-400">Pagina <span class="font-medium">{{ currentPage() }}</span> de <span class="font-medium">{{ totalPages() || 1 }}</span> | Total: <span class="font-medium text-brand-600 dark:text-brand-400">{{ filteredCompras().length }}</span></p>
         <div class="flex gap-2">
-          <button
-            (click)="prevPage()"
-            [disabled]="currentPage() === 1"
-            class="px-3 py-1.5 text-sm font-medium border border-gray-200 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800 transition"
-          >
-            Anterior
-          </button>
-          <button
-            (click)="nextPage()"
-            [disabled]="currentPage() >= totalPages() || totalPages() === 0"
-            class="px-3 py-1.5 text-sm font-medium border border-gray-200 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800 transition"
-          >
-            Siguiente
-          </button>
+          <button (click)="prevPage()" [disabled]="currentPage() === 1" class="px-3 py-1.5 text-sm font-medium border border-gray-200 rounded-md hover:bg-gray-50 disabled:opacity-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800">Anterior</button>
+          <button (click)="nextPage()" [disabled]="currentPage() >= totalPages() || totalPages() === 0" class="px-3 py-1.5 text-sm font-medium border border-gray-200 rounded-md hover:bg-gray-50 disabled:opacity-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800">Siguiente</button>
         </div>
       </div>
-    </div>
-  }
+    }
+  </section>
 </div>

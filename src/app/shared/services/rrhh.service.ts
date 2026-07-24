@@ -16,7 +16,10 @@ export class RrhhService {
 
   // Obtiene todas las áreas
   async getAreas(): Promise<Area[]> {
-    const { data, error } = await this.supabase.from("areas").select("*");
+    const { data, error } = await this.supabase
+      .from("areas")
+      .select("*")
+      .order("nombre", { ascending: true });
     if (error) throw error;
     return data ?? [];
   }
@@ -37,7 +40,8 @@ export class RrhhService {
   async getEmpleados(): Promise<any[]> {
     const { data, error } = await this.supabase
       .from("empleados")
-      .select("*, areas(nombre)");
+      .select("*, areas(nombre)")
+      .order("nombre_completo", { ascending: true });
     if (error) throw error;
     return data ?? [];
   }
@@ -75,7 +79,8 @@ export class RrhhService {
   async getCredenciales(): Promise<any[]> {
     const { data, error } = await this.supabase
       .from("credenciales")
-      .select("*, empleados(nombre_completo)");
+      .select("*, empleados(nombre_completo)")
+      .order("sistema", { ascending: true });
     if (error) throw error;
     return data ?? [];
   }

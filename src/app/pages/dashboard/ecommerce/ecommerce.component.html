@@ -38,8 +38,9 @@
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
         </div>
         <div>
-          <h4 class="text-title-sm font-bold text-gray-800 dark:text-white">{{ inversionTotal() | currency }}</h4>
-          <span class="text-sm font-medium text-gray-500">Inversión Hardware</span>
+          <h4 class="text-theme-xl font-bold text-gray-800 dark:text-white">{{ formatMoney(inversionTotalUsd(), "USD") }}</h4>
+          <p class="text-sm font-semibold text-gray-700 dark:text-gray-300">{{ formatMoney(inversionTotalPen(), "PEN") }}</p>
+          <span class="text-sm font-medium text-gray-500">Inversion Hardware</span>
         </div>
       </div>
 

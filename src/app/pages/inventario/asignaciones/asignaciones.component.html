@@ -9,24 +9,24 @@
       
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Empleado (Receptor)</label>
-        <select formControlName="empleado_id" class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent dark:border-gray-700 dark:bg-gray-800 dark:text-white transition-all">
-          <option value="" disabled selected>-- Seleccionar Empleado --</option>
-          @for (emp of empleados(); track emp.id) {
-            <option [value]="emp.id">{{ emp.nombre_completo }}</option>
-          }
-        </select>
+        <app-searchable-select
+          formControlName="empleado_id"
+          [options]="empleadoOptions()"
+          placeholder="Seleccionar empleado"
+          searchPlaceholder="Buscar empleado..."
+          clearLabel="Sin empleado"
+        />
       </div>
 
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Equipo Disponible</label>
-        <select formControlName="activo_id" class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent dark:border-gray-700 dark:bg-gray-800 dark:text-white transition-all">
-          <option value="" disabled selected>-- Seleccionar Equipo en Almacén --</option>
-          @for (activo of activosDisponibles(); track activo.id) {
-            <option [value]="activo.id">
-              {{ activo.codigo_inventario }} - {{ activo.tipo_activo }} ({{ activo.marca_modelo || 'Genérico' }})
-            </option>
-          }
-        </select>
+        <app-searchable-select
+          formControlName="activo_id"
+          [options]="activoOptions()"
+          placeholder="Seleccionar equipo en almacen"
+          searchPlaceholder="Buscar codigo, tipo o modelo..."
+          clearLabel="Sin equipo"
+        />
       </div>
 
       <div>

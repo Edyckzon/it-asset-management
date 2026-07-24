@@ -29,7 +29,8 @@ export class EcommerceComponent implements OnInit {
   activosEnReparacion = signal(0);
   
   // Financiero & Accesos
-  inversionTotal = signal(0);
+  inversionTotalUsd = signal(0);
+  inversionTotalPen = signal(0);
   totalCredenciales = signal(0);
   
   // Tablas
@@ -63,8 +64,24 @@ export class EcommerceComponent implements OnInit {
       this.activosEnReparacion.set(acts.filter((a) => a.estado === "En Reparación").length);
 
       // 3. Financiero (Sumar total de compras: Cantidad * Precio)
-      const totalDinero = (compras || []).reduce((acc, current) => acc + (current.cantidad * current.precio_unitario), 0);
-      this.inversionTotal.set(totalDinero);
+      const totales = (compras || []).reduce(
+        (acc, current) => {
+          const total = Number(current.cantidad || 0) * Number(current.precio_unitario || 0);
+          const moneda = current.moneda || "USD";
+          const tipoCambio = Number(current.tipo_cambio || 1);
+          if (moneda === "PEN") {
+            acc.pen += total;
+            acc.usd += tipoCambio > 0 ? total / tipoCambio : 0;
+          } else {
+            acc.usd += total;
+            acc.pen += total * tipoCambio;
+          }
+          return acc;
+        },
+        { usd: 0, pen: 0 },
+      );
+      this.inversionTotalUsd.set(totales.usd);
+      this.inversionTotalPen.set(totales.pen);
 
       // 4. Seguridad (Credenciales)
       this.totalCredenciales.set((credenciales || []).length);
@@ -78,5 +95,13 @@ export class EcommerceComponent implements OnInit {
     } finally {
       this.isLoading.set(false);
     }
+  }
+
+  formatMoney(value: number, currency: "USD" | "PEN") {
+    return new Intl.NumberFormat("es-PE", {
+      style: "currency",
+      currency,
+      minimumFractionDigits: 2,
+    }).format(Number(value || 0));
   }
 }

@@ -6,6 +6,7 @@ import { CompraHardware, ActivoTI } from "../models/inventario.model";
 @Injectable({ providedIn: "root" })
 export class InventarioService {
   private supabase: SupabaseClient;
+  private readonly storageBucket = "inventario-ti";
 
   constructor() {
     this.supabase = createClient(
@@ -14,7 +15,6 @@ export class InventarioService {
     );
   }
 
-  // Obtiene las compras de hardware ordenadas por fecha (desc)
   async getCompras(): Promise<CompraHardware[]> {
     const { data, error } = await this.supabase
       .from("compras_hardware")
@@ -24,7 +24,6 @@ export class InventarioService {
     return data ?? [];
   }
 
-  // Crea una compra y devuelve el registro creado
   async createCompra(
     compra: Omit<CompraHardware, "id">,
   ): Promise<CompraHardware> {
@@ -38,29 +37,89 @@ export class InventarioService {
     return data as CompraHardware;
   }
 
-  // Obtiene los activos individuales (incluye nombre del empleado asignado si existe)
+  async updateCompra(
+    id: string,
+    cambios: Partial<CompraHardware>,
+  ): Promise<CompraHardware> {
+    const { data, error } = await this.supabase
+      .from("compras_hardware")
+      .update(cambios)
+      .eq("id", id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data as CompraHardware;
+  }
+
+  async uploadCompraComprobante(compraId: string, file: File) {
+    const ext = file.name.split(".").pop()?.toLowerCase() || "bin";
+    const safeName = file.name
+      .replace(/\.[^/.]+$/, "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-zA-Z0-9_-]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 60);
+    const path = `compras/${compraId}/${Date.now()}-${safeName || "comprobante"}.${ext}`;
+
+    const { error } = await this.supabase.storage
+      .from(this.storageBucket)
+      .upload(path, file, {
+        cacheControl: "3600",
+        upsert: false,
+      });
+
+    if (error) throw error;
+
+    return {
+      comprobante_path: path,
+      comprobante_nombre: file.name,
+      comprobante_tipo: file.type || "application/octet-stream",
+    };
+  }
+
+  async getSignedFileUrl(path: string, expiresInSeconds = 3600) {
+    const { data, error } = await this.supabase.storage
+      .from(this.storageBucket)
+      .createSignedUrl(path, expiresInSeconds);
+
+    if (error) throw error;
+    return data.signedUrl;
+  }
+
+  async deleteFile(path: string) {
+    const { error } = await this.supabase.storage
+      .from(this.storageBucket)
+      .remove([path]);
+
+    if (error) throw error;
+  }
+
   async getActivos(): Promise<ActivoTI[]> {
     const { data, error } = await this.supabase
       .from("activos_ti")
-      .select("*, empleados(nombre_completo)")
-      .order("nombre_pc", { ascending: true });
+      .select(
+        "*, empleados(nombre_completo), compras_hardware(fecha_compra, proveedor, precio_unitario)",
+      )
+      .order("codigo_inventario", { ascending: true });
     if (error) throw error;
     return data ?? [];
   }
 
-  // Actualiza un activo por id
-  async updateActivo(id: string, cambios: Partial<ActivoTI>): Promise<any> {
+  async updateActivo(id: string, cambios: Partial<ActivoTI>): Promise<ActivoTI> {
     const { data, error } = await this.supabase
       .from("activos_ti")
       .update(cambios)
       .eq("id", id)
-      .select("*, empleados(nombre_completo)") // <-- Agregamos la relación aquí
+      .select(
+        "*, empleados(nombre_completo), compras_hardware(fecha_compra, proveedor, precio_unitario)",
+      )
       .single();
     if (error) throw error;
-    return data;
+    return data as ActivoTI;
   }
 
-  // Crea un activo nuevo
   async createActivo(activo: Omit<ActivoTI, "id">): Promise<ActivoTI> {
     const { data, error } = await this.supabase
       .from("activos_ti")
@@ -70,10 +129,6 @@ export class InventarioService {
     if (error) throw error;
     return data as ActivoTI;
   }
-
-  // ==========================================
-  // --- NUEVOS MÉTODOS PARA ASIGNACIONES ---
-  // ==========================================
 
   async getAsignacionesActivas() {
     const { data, error } = await this.supabase
@@ -89,7 +144,6 @@ export class InventarioService {
   }
 
   async crearAsignacion(payload: any) {
-    // 1. Creamos el registro de asignación
     const { data: asignacion, error: errorAsig } = await this.supabase
       .from("asignaciones")
       .insert(payload)
@@ -100,7 +154,6 @@ export class InventarioService {
 
     if (errorAsig) throw errorAsig;
 
-    // 2. Actualizamos el estado del activo a "Asignado"
     const { error: errorActivo } = await this.supabase
       .from("activos_ti")
       .update({ estado: "Asignado", empleado_id: payload.empleado_id })
@@ -112,7 +165,6 @@ export class InventarioService {
   }
 
   async devolverAsignacion(asignacionId: string, activoId: string) {
-    // 1. Marcamos la asignación como devuelta
     const fechaHoy = new Date().toISOString().split("T")[0];
     const { error: errorAsig } = await this.supabase
       .from("asignaciones")
@@ -121,7 +173,6 @@ export class InventarioService {
 
     if (errorAsig) throw errorAsig;
 
-    // 2. Liberamos el activo
     const { error: errorActivo } = await this.supabase
       .from("activos_ti")
       .update({ estado: "Disponible", empleado_id: null })

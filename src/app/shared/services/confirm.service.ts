@@ -3,6 +3,10 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 export interface ConfirmRequest {
   message: string;
+  title?: string;
+  confirmLabel?: string;
+  danger?: boolean;
+  requirePassword?: boolean;
   resolve: (value: boolean) => void;
 }
 
@@ -14,6 +18,23 @@ export class ConfirmService {
   async confirm(message: string): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
       this.requestSubject.next({ message, resolve });
+    });
+  }
+
+  async confirmCritical(
+    message: string,
+    title = "Accion critica",
+    confirmLabel = "Confirmar accion",
+  ): Promise<boolean> {
+    return new Promise<boolean>((resolve) => {
+      this.requestSubject.next({
+        message,
+        title,
+        confirmLabel,
+        danger: true,
+        requirePassword: true,
+        resolve,
+      });
     });
   }
 

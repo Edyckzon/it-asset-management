@@ -1,292 +1,267 @@
-<div class="max-w-6xl mx-auto p-4">
-  
-  <div class="bg-white dark:bg-gray-900 rounded-xl shadow-theme-sm border border-gray-200 dark:border-gray-800 p-5 mb-6">
-    <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">
-      Registrar Nuevo Activo (PC, Monitor, Laptop, etc.)
-    </h3>
-    <form
-      [formGroup]="activoForm"
-      (ngSubmit)="onSubmit()"
-      class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4"
-    >
+<div class="max-w-7xl mx-auto p-4 space-y-5">
+  <section class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+    <div class="bg-white dark:bg-gray-900 rounded-xl shadow-theme-sm border border-gray-200 dark:border-gray-800 p-4">
+      <p class="text-sm text-gray-500 dark:text-gray-400">Activos</p>
+      <p class="text-2xl font-semibold text-gray-900 dark:text-white mt-1">{{ inventoryStats().total }}</p>
+    </div>
+    <div class="bg-white dark:bg-gray-900 rounded-xl shadow-theme-sm border border-gray-200 dark:border-gray-800 p-4">
+      <p class="text-sm text-gray-500 dark:text-gray-400">Disponibles</p>
+      <p class="text-2xl font-semibold text-success-700 dark:text-success-400 mt-1">{{ inventoryStats().disponibles }}</p>
+    </div>
+    <div class="bg-white dark:bg-gray-900 rounded-xl shadow-theme-sm border border-gray-200 dark:border-gray-800 p-4">
+      <p class="text-sm text-gray-500 dark:text-gray-400">Asignados</p>
+      <p class="text-2xl font-semibold text-brand-700 dark:text-brand-400 mt-1">{{ inventoryStats().asignados }}</p>
+    </div>
+    <div class="bg-white dark:bg-gray-900 rounded-xl shadow-theme-sm border border-gray-200 dark:border-gray-800 p-4">
+      <p class="text-sm text-gray-500 dark:text-gray-400">Baja</p>
+      <p class="text-2xl font-semibold text-error-700 dark:text-error-400 mt-1">{{ inventoryStats().baja }}</p>
+    </div>
+  </section>
+
+  <section class="bg-white dark:bg-gray-900 rounded-xl shadow-theme-sm border border-gray-200 dark:border-gray-800 p-5">
+    <div class="mb-4">
+      <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Registrar activo TI</h3>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Crea equipos con datos de red, ubicacion, garantia y compra vinculada.</p>
+    </div>
+
+    <form [formGroup]="activoForm" (ngSubmit)="onSubmit()" class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5 gap-4">
       <div>
-        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Código Inventario</label>
-        <input
-          formControlName="codigo_inventario"
-          placeholder="Ej: PC-001"
-          class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent dark:border-gray-700 dark:bg-gray-800 dark:text-white transition-all"
-        />
-        @if (activoForm.get("codigo_inventario")?.invalid && activoForm.get("codigo_inventario")?.touched) {
-          <span class="text-xs text-error-500 mt-1 block">Este campo es obligatorio</span>
-        }
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Codigo</label>
+        <input formControlName="codigo_inventario" placeholder="PC-001" class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tipo de Activo</label>
-        <select
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tipo</label>
+        <app-searchable-select
           formControlName="tipo_activo"
-          class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent dark:border-gray-700 dark:bg-gray-800 dark:text-white transition-all"
-        >
-          <option value="" disabled selected>-- Seleccionar --</option>
-          <option value="Laptop">Laptop</option>
-          <option value="Desktop">Desktop</option>
-          <option value="Monitor">Monitor</option>
-          <option value="Mouse">Mouse</option>
-          <option value="Teclado">Teclado</option>
-          <option value="AIO">AIO</option>
-        </select>
+          [options]="tipoActivoOptions()"
+          placeholder="Seleccionar tipo"
+          searchPlaceholder="Buscar tipo..."
+          clearLabel="Sin tipo"
+        />
       </div>
 
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Marca / Modelo</label>
-        <input
-          formControlName="marca_modelo"
-          placeholder="Ej: Dell XPS / LG 24'"
-          class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent dark:border-gray-700 dark:bg-gray-800 dark:text-white transition-all"
-        />
+        <input formControlName="marca_modelo" placeholder="Dell Latitude 5440" class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Número de Serie</label>
-        <input
-          formControlName="numero_serie"
-          placeholder="S/N: XYZ123"
-          class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent dark:border-gray-700 dark:bg-gray-800 dark:text-white transition-all"
-        />
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Serie</label>
+        <input formControlName="numero_serie" placeholder="S/N" class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nombre en Red (PC Name)</label>
-        <input
-          formControlName="nombre_pc"
-          placeholder="SOPORTE-PC01"
-          class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent dark:border-gray-700 dark:bg-gray-800 dark:text-white transition-all"
-        />
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">PC Name</label>
+        <input formControlName="nombre_pc" placeholder="SOPORTE-PC01" class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Dirección MAC</label>
-        <input
-          formControlName="direccion_mac"
-          placeholder="00:0A:95:9D:68:16"
-          class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent dark:border-gray-700 dark:bg-gray-800 dark:text-white transition-all"
-        />
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">IP</label>
+        <input formControlName="direccion_ip" placeholder="192.168.1.10" class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Dirección IP</label>
-        <input
-          formControlName="direccion_ip"
-          placeholder="192.168.1.XX"
-          class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent dark:border-gray-700 dark:bg-gray-800 dark:text-white transition-all"
-        />
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">MAC</label>
+        <input formControlName="direccion_mac" placeholder="00:0A:95:9D:68:16" class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Vincular a Compra (Opcional)</label>
-        <select
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Ubicacion</label>
+        <input formControlName="ubicacion" placeholder="Almacen, Lima, Piso 2" class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Fin garantia</label>
+        <input formControlName="fecha_garantia_fin" type="date" class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Compra</label>
+        <app-searchable-select
           formControlName="compra_id"
-          class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent dark:border-gray-700 dark:bg-gray-800 dark:text-white transition-all"
-        >
-          <option value="">-- No aplica (Antiguo) --</option>
-          @for (c of compras(); track c.id) {
-            <option [value]="c.id">
-              {{ c.tipo_producto }} ({{ c.fecha_compra | date: "shortDate" }})
-            </option>
-          }
-        </select>
+          [options]="compraOptions()"
+          placeholder="Sin compra vinculada"
+          searchPlaceholder="Buscar compra..."
+          clearLabel="Sin compra vinculada"
+        />
       </div>
 
-      <div class="md:col-span-3 lg:col-span-4 flex justify-end mt-2">
-        <button
-          type="submit"
-          [disabled]="activoForm.invalid || isLoading()"
-          class="inline-flex items-center gap-2 px-6 py-2.5 text-sm font-medium text-white bg-brand-500 rounded-lg hover:bg-brand-600 disabled:opacity-50 transition-colors shadow-sm"
-        >
-          @if (isLoading()) {
-            <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-          } @else {
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/></svg>
-          }
-          {{ isLoading() ? "Guardando..." : "Añadir al Inventario" }}
+      <div class="md:col-span-2 xl:col-span-4">
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Observaciones</label>
+        <input formControlName="observaciones" placeholder="Estado fisico, accesorios, notas de garantia..." class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+      </div>
+
+      <div class="flex items-end justify-end">
+        <button type="submit" [disabled]="activoForm.invalid || isLoading()" class="w-full xl:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-medium text-white bg-brand-500 rounded-lg hover:bg-brand-600 disabled:opacity-50 shadow-sm">
+          {{ isLoading() ? "Guardando..." : "Agregar activo" }}
         </button>
       </div>
     </form>
-  </div>
+  </section>
 
-  @if (isLoading() && activos().length === 0) {
-    <div class="py-10 text-center text-gray-500 dark:text-gray-400">Cargando inventario de activos...</div>
-  } @else {
-    <div class="flex justify-end gap-3 mb-4">
-      <button
-        (click)="exportarExcel()"
-        [disabled]="activos().length === 0"
-        class="inline-flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-700 hover:bg-green-100 rounded-md transition-colors text-sm font-medium disabled:opacity-50"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-        Excel
-      </button>
-      <button
-        (click)="exportarPdf()"
-        [disabled]="activos().length === 0"
-        class="inline-flex items-center gap-2 px-3 py-1.5 bg-red-50 text-red-700 hover:bg-red-100 rounded-md transition-colors text-sm font-medium disabled:opacity-50"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
-        PDF
-      </button>
+  <section class="bg-white dark:bg-gray-900 rounded-xl shadow-theme-sm border border-gray-200 dark:border-gray-800">
+    <div class="p-5 border-b border-gray-200 dark:border-gray-800 space-y-4">
+      <div class="grid grid-cols-1 md:grid-cols-[1fr_160px_160px_220px_120px] gap-3">
+        <input [value]="searchTerm()" (input)="onSearch($any($event.target).value)" placeholder="Buscar por codigo, serie, IP, MAC, modelo, empleado..." class="w-full h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white" />
+
+        <select [value]="estadoFilter()" (change)="onEstadoFilter($any($event.target).value)" class="h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-white">
+          <option value="TODOS">Todos estados</option>
+          @for (estado of estados; track estado) {
+            <option [value]="estado">{{ estado }}</option>
+          }
+        </select>
+
+        <select [value]="tipoFilter()" (change)="onTipoFilter($any($event.target).value)" class="h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-white">
+          <option value="TODOS">Todos tipos</option>
+          @for (tipo of tiposActivo; track tipo) {
+            <option [value]="tipo">{{ tipo }}</option>
+          }
+        </select>
+
+        <select [value]="empleadoFilter()" (change)="onEmpleadoFilter($any($event.target).value)" class="h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-white">
+          <option value="TODOS">Todos empleados</option>
+          <option value="SIN_ASIGNAR">Sin asignar</option>
+          @for (emp of empleados(); track emp.id) {
+            <option [value]="emp.id">{{ emp.nombre_completo }}</option>
+          }
+        </select>
+
+        <select [value]="itemsPerPage()" (change)="onItemsPerPage($any($event.target).value)" class="h-10 px-3 rounded-lg border border-gray-300 bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-white">
+          <option value="8">8 filas</option>
+          <option value="15">15 filas</option>
+          <option value="30">30 filas</option>
+        </select>
+      </div>
+
+      <div class="flex flex-wrap justify-between gap-3">
+        <button (click)="resetFilters()" class="px-3 py-1.5 text-sm font-medium border border-gray-200 rounded-md hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800">Limpiar filtros</button>
+        <div class="flex gap-2">
+          <button (click)="exportarExcel()" [disabled]="filteredActivos().length === 0" class="px-3 py-1.5 bg-green-50 text-green-700 hover:bg-green-100 rounded-md text-sm font-medium disabled:opacity-50">Excel</button>
+          <button (click)="exportarPdf()" [disabled]="filteredActivos().length === 0" class="px-3 py-1.5 bg-red-50 text-red-700 hover:bg-red-100 rounded-md text-sm font-medium disabled:opacity-50">PDF</button>
+        </div>
+      </div>
     </div>
 
-    <div class="overflow-hidden bg-white dark:bg-gray-900 rounded-xl shadow-theme-sm border border-gray-200 dark:border-gray-800">
+    @if (isLoading() && activos().length === 0) {
+      <div class="py-10 text-center text-gray-500 dark:text-gray-400">Cargando inventario...</div>
+    } @else {
       <div class="overflow-x-auto">
         <table class="min-w-full text-left border-collapse">
           <thead class="bg-gray-50 dark:bg-gray-800/50">
             <tr>
-              <th class="px-5 py-4 text-xs font-bold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Código / Tipo</th>
-              <th class="px-5 py-4 text-xs font-bold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Detalles Técnicos</th>
-              <th class="px-5 py-4 text-xs font-bold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Estado</th>
-              <th class="px-5 py-4 text-xs font-bold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Asignado a</th>
-              <th class="px-5 py-4 text-xs font-bold text-gray-600 dark:text-gray-300 uppercase tracking-wider text-center">Acciones</th>
+              <th class="px-5 py-4 text-xs font-bold text-gray-600 dark:text-gray-300 uppercase">Activo</th>
+              <th class="px-5 py-4 text-xs font-bold text-gray-600 dark:text-gray-300 uppercase">Tecnico</th>
+              <th class="px-5 py-4 text-xs font-bold text-gray-600 dark:text-gray-300 uppercase">Gestion</th>
+              <th class="px-5 py-4 text-xs font-bold text-gray-600 dark:text-gray-300 uppercase">Asignacion</th>
+              <th class="px-5 py-4 text-xs font-bold text-gray-600 dark:text-gray-300 uppercase text-center">Acciones</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
             @for (a of paginatedActivos(); track a.id) {
-              <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition">
-                <td class="px-5 py-4">
-                  <div class="font-bold text-gray-800 dark:text-white">{{ a.codigo_inventario }}</div>
-                  <div class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ a.tipo_activo }}</div>
-                </td>
-                <td class="px-5 py-4">
+              <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition align-top">
+                <td class="px-5 py-4 min-w-52">
                   @if (!editing()[a.id]) {
-                    <div class="text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Name: <span class="font-mono text-gray-600 dark:text-gray-400">{{ a.nombre_pc || "N/A" }}</span>
-                    </div>
-                    <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                      IP: <span class="font-mono">{{ a.direccion_ip || "-" }}</span>
-                      | MAC: <span class="font-mono">{{ a.direccion_mac || "-" }}</span>
-                    </div>
+                    <div class="font-bold text-gray-800 dark:text-white">{{ a.codigo_inventario }}</div>
+                    <div class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ a.tipo_activo }} | {{ a.marca_modelo || "Sin modelo" }}</div>
+                    <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">Serie: <span class="font-mono">{{ a.numero_serie || "-" }}</span></div>
                   } @else {
                     <div class="space-y-2">
-                      <input
-                        class="w-full text-xs p-1.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-brand-500 focus:border-brand-500 dark:bg-gray-800 dark:border-gray-700 dark:text-white transition-all"
-                        [value]="editBuffers()[a.id]?.nombre_pc || ''"
-                        (input)="onEditField(a.id, 'nombre_pc', $any($event.target).value)"
-                        placeholder="Nombre PC"
-                      />
-                      <div class="flex gap-2">
-                        <input
-                          class="w-1/2 text-xs p-1.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-brand-500 focus:border-brand-500 dark:bg-gray-800 dark:border-gray-700 dark:text-white transition-all"
-                          [value]="editBuffers()[a.id]?.direccion_ip || ''"
-                          (input)="onEditField(a.id, 'direccion_ip', $any($event.target).value)"
-                          placeholder="IP"
-                        />
-                        <input
-                          class="w-1/2 text-xs p-1.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-brand-500 focus:border-brand-500 dark:bg-gray-800 dark:border-gray-700 dark:text-white transition-all"
-                          [value]="editBuffers()[a.id]?.direccion_mac || ''"
-                          (input)="onEditField(a.id, 'direccion_mac', $any($event.target).value)"
-                          placeholder="MAC"
-                        />
-                      </div>
+                      <input class="w-full text-xs p-2 border rounded-md dark:bg-gray-800 dark:border-gray-700 dark:text-white" [value]="editBuffers()[a.id]?.codigo_inventario || ''" (input)="onEditField(a.id, 'codigo_inventario', $any($event.target).value)" placeholder="Codigo" />
+                      <select class="w-full text-xs p-2 border rounded-md dark:bg-gray-800 dark:border-gray-700 dark:text-white" [value]="editBuffers()[a.id]?.tipo_activo || ''" (change)="onEditField(a.id, 'tipo_activo', $any($event.target).value)">
+                        @for (tipo of tiposActivo; track tipo) {
+                          <option [value]="tipo">{{ tipo }}</option>
+                        }
+                      </select>
+                      <input class="w-full text-xs p-2 border rounded-md dark:bg-gray-800 dark:border-gray-700 dark:text-white" [value]="editBuffers()[a.id]?.marca_modelo || ''" (input)="onEditField(a.id, 'marca_modelo', $any($event.target).value)" placeholder="Marca / modelo" />
+                      <input class="w-full text-xs p-2 border rounded-md dark:bg-gray-800 dark:border-gray-700 dark:text-white" [value]="editBuffers()[a.id]?.numero_serie || ''" (input)="onEditField(a.id, 'numero_serie', $any($event.target).value)" placeholder="Serie" />
                     </div>
                   }
                 </td>
-                <td class="px-5 py-4">
-                  <span
-                    class="px-2.5 py-1 rounded-full text-xs font-semibold border"
-                    [ngClass]="{
+
+                <td class="px-5 py-4 min-w-64">
+                  @if (!editing()[a.id]) {
+                    <div class="text-sm text-gray-700 dark:text-gray-300">PC: <span class="font-mono">{{ a.nombre_pc || "-" }}</span></div>
+                    <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">IP: <span class="font-mono">{{ a.direccion_ip || "-" }}</span></div>
+                    <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">MAC: <span class="font-mono">{{ a.direccion_mac || "-" }}</span></div>
+                  } @else {
+                    <div class="space-y-2">
+                      <input class="w-full text-xs p-2 border rounded-md dark:bg-gray-800 dark:border-gray-700 dark:text-white" [value]="editBuffers()[a.id]?.nombre_pc || ''" (input)="onEditField(a.id, 'nombre_pc', $any($event.target).value)" placeholder="PC Name" />
+                      <input class="w-full text-xs p-2 border rounded-md dark:bg-gray-800 dark:border-gray-700 dark:text-white" [value]="editBuffers()[a.id]?.direccion_ip || ''" (input)="onEditField(a.id, 'direccion_ip', $any($event.target).value)" placeholder="IP" />
+                      <input class="w-full text-xs p-2 border rounded-md dark:bg-gray-800 dark:border-gray-700 dark:text-white" [value]="editBuffers()[a.id]?.direccion_mac || ''" (input)="onEditField(a.id, 'direccion_mac', $any($event.target).value)" placeholder="MAC" />
+                    </div>
+                  }
+                </td>
+
+                <td class="px-5 py-4 min-w-64">
+                  @if (!editing()[a.id]) {
+                    <span class="px-2.5 py-1 rounded-full text-xs font-semibold border" [ngClass]="{
                       'bg-success-50 text-success-700 border-success-200 dark:bg-success-500/10 dark:text-success-400 dark:border-success-500/20': a.estado === 'Disponible',
                       'bg-brand-50 text-brand-700 border-brand-200 dark:bg-brand-500/10 dark:text-brand-400 dark:border-brand-500/20': a.estado === 'Asignado',
-                      'bg-warning-50 text-warning-700 border-warning-200 dark:bg-warning-500/10 dark:text-warning-400 dark:border-warning-500/20': a.estado === 'En Reparación',
+                      'bg-warning-50 text-warning-700 border-warning-200 dark:bg-warning-500/10 dark:text-warning-400 dark:border-warning-500/20': a.estado === 'En Reparacion',
                       'bg-error-50 text-error-700 border-error-200 dark:bg-error-500/10 dark:text-error-400 dark:border-error-500/20': a.estado === 'Baja'
-                    }"
-                  >
-                    {{ a.estado }}
-                  </span>
-                </td>
-                <td class="px-5 py-4">
-                  @if (a.empleados) {
-                    <div class="flex items-center gap-2">
-                      <div class="h-7 w-7 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center text-xs font-bold uppercase dark:bg-brand-900/30 dark:text-brand-400">
-                        {{ a.empleados.nombre_completo.charAt(0) }}
-                      </div>
-                      <div class="text-sm font-medium text-gray-800 dark:text-gray-200">
-                        {{ a.empleados.nombre_completo }}
-                      </div>
-                    </div>
+                    }">{{ a.estado }}</span>
+                    <div class="text-xs text-gray-500 dark:text-gray-400 mt-3">Ubicacion: {{ a.ubicacion || "-" }}</div>
+                    <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">Garantia: {{ a.fecha_garantia_fin ? (a.fecha_garantia_fin | date: "dd/MM/yyyy") : "-" }}</div>
+                    <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ formatCompra(a.compras_hardware) }}</div>
                   } @else {
-                    <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-600 border border-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700">
-                      📦 En Almacén
-                    </span>
+                    <div class="space-y-2">
+                      <select class="w-full text-xs p-2 border rounded-md dark:bg-gray-800 dark:border-gray-700 dark:text-white" [value]="editBuffers()[a.id]?.estado || ''" (change)="onEditField(a.id, 'estado', $any($event.target).value)">
+                        @for (estado of estados; track estado) {
+                          <option [value]="estado">{{ estado }}</option>
+                        }
+                      </select>
+                      <input class="w-full text-xs p-2 border rounded-md dark:bg-gray-800 dark:border-gray-700 dark:text-white" [value]="editBuffers()[a.id]?.ubicacion || ''" (input)="onEditField(a.id, 'ubicacion', $any($event.target).value)" placeholder="Ubicacion" />
+                      <input type="date" class="w-full text-xs p-2 border rounded-md dark:bg-gray-800 dark:border-gray-700 dark:text-white" [value]="editBuffers()[a.id]?.fecha_garantia_fin || ''" (input)="onEditField(a.id, 'fecha_garantia_fin', $any($event.target).value)" />
+                    </div>
                   }
                 </td>
+
+                <td class="px-5 py-4 min-w-56">
+                  @if (!editing()[a.id]) {
+                    @if (a.empleados) {
+                      <div class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ a.empleados.nombre_completo }}</div>
+                    } @else {
+                      <span class="inline-flex px-2.5 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-600 border border-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700">En almacen</span>
+                    }
+                  } @else {
+                    <select class="w-full text-xs p-2 border rounded-md dark:bg-gray-800 dark:border-gray-700 dark:text-white" [value]="editBuffers()[a.id]?.empleado_id || ''" (change)="onEditField(a.id, 'empleado_id', $any($event.target).value || null)">
+                      <option value="">Sin asignar</option>
+                      @for (emp of empleados(); track emp.id) {
+                        <option [value]="emp.id">{{ emp.nombre_completo }}</option>
+                      }
+                    </select>
+                    <textarea rows="3" class="w-full text-xs p-2 border rounded-md mt-2 dark:bg-gray-800 dark:border-gray-700 dark:text-white" [value]="editBuffers()[a.id]?.observaciones || ''" (input)="onEditField(a.id, 'observaciones', $any($event.target).value)" placeholder="Observaciones"></textarea>
+                  }
+                </td>
+
                 <td class="px-5 py-4 text-center">
                   <div class="flex justify-center gap-2">
                     @if (!editing()[a.id]) {
-                      <button
-                        (click)="startEdit(a)"
-                        class="p-2 text-warning-500 hover:bg-warning-50 hover:text-warning-600 rounded-lg transition-colors dark:hover:bg-warning-500/10"
-                        title="Editar detalles técnicos"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                        </svg>
-                      </button>
+                      <button (click)="startEdit(a)" class="px-3 py-1.5 text-xs font-semibold text-warning-700 bg-warning-50 border border-warning-200 rounded-md hover:bg-warning-100 dark:bg-warning-500/10 dark:text-warning-400 dark:border-warning-500/20">Editar</button>
                     } @else {
-                      <button
-                        (click)="saveEdit(a.id)"
-                        class="p-2 bg-success-500 text-white rounded-lg hover:bg-success-600 transition-colors shadow-sm"
-                        title="Guardar"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                        </svg>
-                      </button>
-                      <button
-                        (click)="cancelEdit(a.id)"
-                        class="p-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500 transition-colors shadow-sm dark:bg-gray-600 dark:hover:bg-gray-500"
-                        title="Cancelar"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                      </button>
+                      <button (click)="saveEdit(a.id)" class="px-3 py-1.5 text-xs font-semibold text-white bg-success-500 rounded-md hover:bg-success-600">Guardar</button>
+                      <button (click)="cancelEdit(a.id)" class="px-3 py-1.5 text-xs font-semibold text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-100">Cancelar</button>
                     }
                   </div>
                 </td>
               </tr>
             } @empty {
               <tr>
-                <td colspan="5" class="px-5 py-8 text-center text-sm text-gray-500 dark:text-gray-400">
-                  No hay activos registrados en el inventario.
-                </td>
+                <td colspan="5" class="px-5 py-8 text-center text-sm text-gray-500 dark:text-gray-400">No hay activos con esos filtros.</td>
               </tr>
             }
           </tbody>
         </table>
       </div>
 
-      <div class="flex items-center justify-between px-5 py-3 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
-        <p class="text-sm text-gray-500 dark:text-gray-400">
-          Página <span class="font-medium">{{ currentPage() }}</span> de <span class="font-medium">{{ totalPages() || 1 }}</span>
-          <span class="text-gray-300 dark:text-gray-600 mx-2">|</span>
-          Total: <span class="font-medium text-brand-600 dark:text-brand-400">{{ activos().length }}</span> activos
-        </p>
+      <div class="flex items-center justify-between px-5 py-3 border-t border-gray-200 dark:border-gray-800">
+        <p class="text-sm text-gray-500 dark:text-gray-400">Pagina <span class="font-medium">{{ currentPage() }}</span> de <span class="font-medium">{{ totalPages() || 1 }}</span> | Total: <span class="font-medium text-brand-600 dark:text-brand-400">{{ filteredActivos().length }}</span></p>
         <div class="flex gap-2">
-          <button
-            (click)="prevPage()"
-            [disabled]="currentPage() === 1"
-            class="px-3 py-1.5 text-sm font-medium border border-gray-200 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800 transition"
-          >
-            Anterior
-          </button>
-          <button
-            (click)="nextPage()"
-            [disabled]="currentPage() >= totalPages() || totalPages() === 0"
-            class="px-3 py-1.5 text-sm font-medium border border-gray-200 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800 transition"
-          >
-            Siguiente
-          </button>
+          <button (click)="prevPage()" [disabled]="currentPage() === 1" class="px-3 py-1.5 text-sm font-medium border border-gray-200 rounded-md hover:bg-gray-50 disabled:opacity-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800">Anterior</button>
+          <button (click)="nextPage()" [disabled]="currentPage() >= totalPages() || totalPages() === 0" class="px-3 py-1.5 text-sm font-medium border border-gray-200 rounded-md hover:bg-gray-50 disabled:opacity-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800">Siguiente</button>
         </div>
       </div>
-    </div>
-  }
+    }
+  </section>
 </div>

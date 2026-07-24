@@ -6,12 +6,14 @@ import { HistorialService } from "../../../shared/services/historial.service";
 import { SupabaseService } from "../../../shared/services/supabase.service";
 import { ToastService } from "../../../shared/services/toast.service";
 import { ExportService } from "../../../shared/services/export.service";
+import { ConfirmService } from "../../../shared/services/confirm.service";
 import { Empleado, Credencial } from "../../../shared/models/rrhh.model";
+import { SearchableSelectComponent, SearchableSelectOption } from "../../../shared/components/form/searchable-select/searchable-select.component";
 
 @Component({
   selector: "app-credenciales",
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, SearchableSelectComponent],
   templateUrl: "./credenciales.component.html",
   styles: [``],
 })
@@ -22,6 +24,7 @@ export class CredencialesComponent implements OnInit {
   private fb = inject(FormBuilder);
   private toast = inject(ToastService);
   private exportSvc = inject(ExportService);
+  private confirm = inject(ConfirmService);
 
   userId: string | null = null;
 
@@ -30,6 +33,14 @@ export class CredencialesComponent implements OnInit {
   isLoading = signal(false);
 
   filterName = signal("");
+
+  empleadoOptions = computed<SearchableSelectOption[]>(() =>
+    this.empleados().map((e) => ({
+      value: e.id,
+      label: e.nombre_completo,
+      hint: e.cargo,
+    })),
+  );
 
   // Estado de edición (Patrón Cargar en Formulario)
   credencialEnEdicion = signal<any | null>(null);
@@ -103,7 +114,11 @@ export class CredencialesComponent implements OnInit {
         this.rrhh.getEmpleados(),
         this.rrhh.getCredenciales(),
       ]);
-      this.empleados.set(empleadosList);
+      this.empleados.set(
+        [...empleadosList].sort((a, b) =>
+          a.nombre_completo.localeCompare(b.nombre_completo, "es", { sensitivity: "base" }),
+        ),
+      );
       this.credenciales.set(creds);
     } catch (err) {
       console.error("Error cargando credenciales", err);
@@ -181,7 +196,13 @@ export class CredencialesComponent implements OnInit {
   }
 
   async onDelete(id: string) {
-    if (!confirm("¿Estás seguro de eliminar esta credencial?")) return;
+    const cred = this.credenciales().find((item) => item.id === id);
+    const ok = await this.confirm.confirmCritical(
+      `Vas a eliminar la credencial de ${cred?.sistema || "este sistema"} para ${cred?.empleados?.nombre_completo || "este empleado"}. Esta informacion es sensible.`,
+      "Eliminar credencial",
+      "Eliminar credencial",
+    );
+    if (!ok) return;
 
     try {
       await this.rrhh.deleteCredencial(id);

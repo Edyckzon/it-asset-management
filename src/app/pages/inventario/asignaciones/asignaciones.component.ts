@@ -8,11 +8,12 @@ import { SupabaseService } from "../../../shared/services/supabase.service";
 import { ToastService } from "../../../shared/services/toast.service";
 import { ExportService } from "../../../shared/services/export.service";
 import { ConfirmService } from "../../../shared/services/confirm.service";
+import { SearchableSelectComponent, SearchableSelectOption } from "../../../shared/components/form/searchable-select/searchable-select.component";
 
 @Component({
   selector: "app-asignaciones",
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, SearchableSelectComponent],
   templateUrl: "./asignaciones.component.html",
   styles: [``],
 })
@@ -37,6 +38,22 @@ export class AsignacionesComponent implements OnInit {
     activo_id: ["", [Validators.required]],
     notas: [""],
   });
+
+  empleadoOptions = computed<SearchableSelectOption[]>(() =>
+    this.empleados().map((emp) => ({
+      value: emp.id,
+      label: emp.nombre_completo,
+      hint: emp.cargo || emp.areas?.nombre,
+    })),
+  );
+
+  activoOptions = computed<SearchableSelectOption[]>(() =>
+    this.activosDisponibles().map((activo) => ({
+      value: activo.id,
+      label: `${activo.codigo_inventario} - ${activo.tipo_activo}`,
+      hint: activo.marca_modelo || activo.nombre_pc || "Sin modelo",
+    })),
+  );
 
   // --- LÓGICA DE PAGINACIÓN ---
   currentPage = signal<number>(1);
@@ -107,10 +124,12 @@ export class AsignacionesComponent implements OnInit {
       ]);
       
       this.asignaciones.set(asigs);
-      this.empleados.set(emps);
+      this.empleados.set([...emps].sort((a, b) => a.nombre_completo.localeCompare(b.nombre_completo)));
       
       // Filtramos para mostrar solo los que están realmente disponibles en almacén
-      const disponibles = todosLosActivos.filter(a => a.estado === 'Disponible');
+      const disponibles = todosLosActivos
+        .filter(a => a.estado === 'Disponible')
+        .sort((a, b) => a.codigo_inventario.localeCompare(b.codigo_inventario));
       this.activosDisponibles.set(disponibles);
 
     } catch (err) {
@@ -162,8 +181,10 @@ export class AsignacionesComponent implements OnInit {
     const empleado = asignacion.empleados?.nombre_completo;
     const equipo = asignacion.activos_ti?.codigo_inventario;
     
-    const ok = await this.confirm.confirm(
-      `¿Confirmas la devolución del equipo ${equipo} por parte de ${empleado}? El equipo volverá al almacén como "Disponible".`
+    const ok = await this.confirm.confirmCritical(
+      `Confirmas la devolucion del equipo ${equipo} por parte de ${empleado}? El equipo volvera al almacen como "Disponible" y se cerrara la asignacion activa.`,
+      "Devolver equipo asignado",
+      "Confirmar devolucion",
     );
     if (!ok) return;
 

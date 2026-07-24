@@ -26,6 +26,20 @@ export class SupabaseService {
     return data;
   }
 
+  async verifyCurrentUserPassword(password: string): Promise<boolean> {
+    const user = await this.getUser();
+    const email = user?.email;
+
+    if (!email || !password) return false;
+
+    const { error } = await this.supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    return !error;
+  }
+
   // Devuelve la sesión actual (o null si no existe)
   async getSession(): Promise<any | null> {
     const res = await this.supabase.auth.getSession();
