@@ -127,7 +127,7 @@ export class ActivosComponent implements OnInit {
     this.isLoading.set(true);
     try {
       const [emps, acts, comps, user] = await Promise.all([
-        this.rrhh.getEmpleados(),
+        this.rrhh.getEmpleadosActivos(),
         this.inv.getActivos(),
         this.inv.getCompras(),
         this.supabase.getUser(),

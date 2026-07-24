@@ -31,6 +31,7 @@ export class ComprasHardwareComponent implements OnInit {
   compraEnEdicion = signal<CompraHardware | null>(null);
   selectedFile = signal<File | null>(null);
   signedUrls = signal<Record<string, string>>({});
+  previewFile = signal<{ compra: CompraHardware; url: string } | null>(null);
 
   compraForm = this.fb.group({
     fecha_compra: ["", [Validators.required]],
@@ -278,11 +279,33 @@ export class ComprasHardwareComponent implements OnInit {
     try {
       const existing = this.signedUrls()[compra.comprobante_path];
       const url = existing || (await this.loadSignedUrl(compra));
-      window.open(url, "_blank", "noopener,noreferrer");
+      this.previewFile.set({ compra, url });
     } catch (err) {
       console.error("Error abriendo comprobante", err);
       this.toast.error("No se pudo abrir el comprobante. Revisa politicas Storage.");
     }
+  }
+
+  closePreview() {
+    this.previewFile.set(null);
+  }
+
+  openPreviewExternal() {
+    const preview = this.previewFile();
+    if (!preview) return;
+    window.open(preview.url, "_blank", "noopener,noreferrer");
+  }
+
+  isPreviewImage() {
+    const tipo = this.previewFile()?.compra.comprobante_tipo || "";
+    const nombre = this.previewFile()?.compra.comprobante_nombre || "";
+    return tipo.startsWith("image/") || /\.(png|jpe?g|webp|gif)$/i.test(nombre);
+  }
+
+  isPreviewPdf() {
+    const tipo = this.previewFile()?.compra.comprobante_tipo || "";
+    const nombre = this.previewFile()?.compra.comprobante_nombre || "";
+    return tipo === "application/pdf" || /\.pdf$/i.test(nombre);
   }
 
   clearSelectedFile(fileInput?: HTMLInputElement) {

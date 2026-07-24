@@ -191,11 +191,18 @@
                 <td class="px-5 py-4 text-center">
                   @if (c.comprobante_path) {
                     <div class="flex items-center justify-center gap-2">
-                      <button type="button" (click)="openComprobante(c)" class="inline-flex items-center justify-center rounded-md bg-brand-50 px-3 py-1.5 text-xs font-medium text-brand-700 hover:bg-brand-100 dark:bg-brand-500/10 dark:text-brand-400">
-                        Ver
+                      <button type="button" (click)="openComprobante(c)" aria-label="Ver comprobante" class="group relative inline-flex h-9 w-9 items-center justify-center rounded-lg border border-brand-200 bg-brand-50 text-brand-600 transition hover:-translate-y-0.5 hover:bg-brand-100 hover:shadow-sm dark:border-brand-500/20 dark:bg-brand-500/10 dark:text-brand-400">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12s3.75-6.75 9.75-6.75S21.75 12 21.75 12 18 18.75 12 18.75 2.25 12 2.25 12z" />
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        <span class="pointer-events-none absolute -top-9 left-1/2 z-20 -translate-x-1/2 scale-95 whitespace-nowrap rounded-md bg-gray-900 px-2 py-1 text-xs font-medium text-white opacity-0 shadow-lg transition group-hover:scale-100 group-hover:opacity-100">Ver comprobante</span>
                       </button>
-                      <button type="button" (click)="deleteComprobante(c)" class="inline-flex items-center justify-center rounded-md bg-error-50 px-3 py-1.5 text-xs font-medium text-error-700 hover:bg-error-100 dark:bg-error-500/10 dark:text-error-400">
-                        Borrar
+                      <button type="button" (click)="deleteComprobante(c)" aria-label="Eliminar comprobante" class="group relative inline-flex h-9 w-9 items-center justify-center rounded-lg border border-error-200 bg-error-50 text-error-600 transition hover:-translate-y-0.5 hover:bg-error-100 hover:shadow-sm dark:border-error-500/20 dark:bg-error-500/10 dark:text-error-400">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M6 7h12M9 7V5.75A1.75 1.75 0 0110.75 4h2.5A1.75 1.75 0 0115 5.75V7m-7 0l.75 12A2 2 0 0010.75 21h2.5a2 2 0 002-1.875L16 7M10 11v6m4-6v6" />
+                        </svg>
+                        <span class="pointer-events-none absolute -top-9 left-1/2 z-20 -translate-x-1/2 scale-95 whitespace-nowrap rounded-md bg-gray-900 px-2 py-1 text-xs font-medium text-white opacity-0 shadow-lg transition group-hover:scale-100 group-hover:opacity-100">Eliminar archivo</span>
                       </button>
                     </div>
                   } @else {
@@ -203,8 +210,11 @@
                   }
                 </td>
                 <td class="px-5 py-4 text-center">
-                  <button type="button" (click)="startEdit(c)" class="text-sm font-medium text-brand-500 hover:text-brand-700 dark:text-brand-400">
-                    Editar
+                  <button type="button" (click)="startEdit(c)" aria-label="Editar compra" class="group relative inline-flex h-9 w-9 items-center justify-center rounded-lg border border-warning-200 bg-warning-50 text-warning-700 transition hover:-translate-y-0.5 hover:bg-warning-100 hover:shadow-sm dark:border-warning-500/20 dark:bg-warning-500/10 dark:text-warning-400">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L9 17.652 5.25 18.75 6.348 15 16.862 4.487z" />
+                    </svg>
+                    <span class="pointer-events-none absolute -top-9 left-1/2 z-20 -translate-x-1/2 scale-95 whitespace-nowrap rounded-md bg-gray-900 px-2 py-1 text-xs font-medium text-white opacity-0 shadow-lg transition group-hover:scale-100 group-hover:opacity-100">Editar compra</span>
                   </button>
                 </td>
               </tr>
@@ -226,4 +236,49 @@
       </div>
     }
   </section>
+
+  @if (previewFile(); as preview) {
+    <div class="fixed inset-0 z-[99990] flex items-center justify-center bg-gray-950/80 p-4 backdrop-blur-sm" (click)="closePreview()">
+      <section class="flex max-h-[92vh] w-full max-w-6xl flex-col overflow-hidden rounded-2xl border border-white/10 bg-white shadow-2xl dark:bg-gray-950" (click)="$event.stopPropagation()">
+        <header class="flex flex-col gap-3 border-b border-gray-200 p-4 dark:border-gray-800 lg:flex-row lg:items-center lg:justify-between">
+          <div class="min-w-0">
+            <p class="text-xs font-semibold uppercase tracking-wide text-brand-500">Comprobante de compra</p>
+            <h3 class="truncate text-lg font-bold text-gray-900 dark:text-white">
+              {{ preview.compra.comprobante_nombre || preview.compra.numero_documento || preview.compra.proveedor }}
+            </h3>
+            <p class="mt-1 truncate text-sm text-gray-500 dark:text-gray-400">
+              {{ preview.compra.proveedor }} · {{ preview.compra.fecha_compra | date: "dd/MM/yyyy" }} · {{ formatMoney(totalCompra(preview.compra), preview.compra.moneda || "USD") }}
+            </p>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2 sm:flex">
+            <a [href]="preview.url" [download]="preview.compra.comprobante_nombre || 'comprobante'" class="inline-flex h-10 items-center justify-center whitespace-nowrap rounded-lg border border-gray-200 px-4 text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800">
+              Descargar
+            </a>
+            <button type="button" (click)="openPreviewExternal()" class="inline-flex h-10 items-center justify-center whitespace-nowrap rounded-lg border border-gray-200 px-4 text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800">
+              Abrir externo
+            </button>
+            <button type="button" (click)="closePreview()" class="inline-flex h-10 items-center justify-center whitespace-nowrap rounded-lg bg-gray-900 px-4 text-sm font-semibold text-white hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200">
+              Cerrar
+            </button>
+          </div>
+        </header>
+
+        <div class="min-h-0 flex-1 bg-gray-100 p-3 dark:bg-gray-900">
+          @if (isPreviewImage()) {
+            <div class="flex max-h-[72vh] min-h-[22rem] items-center justify-center overflow-auto rounded-xl bg-gray-950">
+              <img [src]="preview.url" [alt]="preview.compra.comprobante_nombre || 'Comprobante'" class="max-h-[72vh] max-w-full rounded-lg object-contain shadow-2xl" />
+            </div>
+          } @else if (isPreviewPdf()) {
+            <iframe [src]="preview.url" title="Comprobante PDF" class="h-[72vh] w-full rounded-xl border-0 bg-white"></iframe>
+          } @else {
+            <div class="flex min-h-[22rem] flex-col items-center justify-center rounded-xl border border-dashed border-gray-300 bg-white p-8 text-center dark:border-gray-700 dark:bg-gray-950">
+              <p class="text-lg font-semibold text-gray-900 dark:text-white">Vista previa no disponible</p>
+              <p class="mt-2 max-w-md text-sm text-gray-500 dark:text-gray-400">Este tipo de archivo no se puede previsualizar dentro del navegador, pero puedes descargarlo o abrirlo externo.</p>
+            </div>
+          }
+        </div>
+      </section>
+    </div>
+  }
 </div>

@@ -119,7 +119,7 @@ export class AsignacionesComponent implements OnInit {
     try {
       const [asigs, emps, todosLosActivos] = await Promise.all([
         this.inv.getAsignacionesActivas(),
-        this.rrhh.getEmpleados(),
+        this.rrhh.getEmpleadosActivos(),
         this.inv.getActivos()
       ]);
       

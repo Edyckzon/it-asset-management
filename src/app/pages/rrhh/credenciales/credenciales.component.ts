@@ -111,7 +111,7 @@ export class CredencialesComponent implements OnInit {
     this.isLoading.set(true);
     try {
       const [empleadosList, creds] = await Promise.all([
-        this.rrhh.getEmpleados(),
+        this.rrhh.getEmpleadosActivos(),
         this.rrhh.getCredenciales(),
       ]);
       this.empleados.set(

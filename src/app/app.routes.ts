@@ -4,6 +4,9 @@ import { AppLayoutComponent } from "./shared/layout/app-layout/app-layout.compon
 import { authGuard } from "./shared/guards/auth.guard";
 import { SignInComponent } from "./pages/auth-pages/sign-in/sign-in.component";
 import { NotFoundComponent } from "./pages/other-page/not-found/not-found.component";
+import { ProfileComponent } from "./pages/profile/profile.component";
+import { SettingsComponent } from "./pages/settings/settings.component";
+import { SupportComponent } from "./pages/support/support.component";
 
 // Importaciones de tus módulos del ERP
 import { AreasComponent } from "./pages/rrhh/areas/areas.component";
@@ -13,6 +16,7 @@ import { ComprasHardwareComponent } from "./pages/inventario/compras/compras-har
 import { ActivosComponent } from "./pages/inventario/activos/activos.component";
 import { HistorialComponent } from "./pages/inventario/historial/historial.component";
 import { AsignacionesComponent } from "./pages/inventario/asignaciones/asignaciones.component";
+import { ResumenInventarioComponent } from "./pages/inventario/resumen/resumen-inventario.component";
 import { EquiposComponent } from "./pages/rrhh/equipos/equipos.component";
 
 /* === IMPORTACIONES COMENTADAS DE LA PLANTILLA ===
@@ -70,6 +74,16 @@ export const routes: Routes = [
 
       // --- MÓDULO INVENTARIO ---
       {
+        path: "inventario",
+        redirectTo: "inventario/resumen",
+        pathMatch: "full",
+      },
+      {
+        path: "inventario/resumen",
+        component: ResumenInventarioComponent,
+        title: "Inventario TI - Resumen",
+      },
+      {
         path: "inventario/compras",
         component: ComprasHardwareComponent,
         title: "Inventario - Compras Hardware",
@@ -98,6 +112,22 @@ export const routes: Routes = [
           import("./pages/network/ac-users/ac-users.component").then(
             (m) => m.AcUsersComponent,
           ),
+      },
+
+      {
+        path: "profile",
+        component: ProfileComponent,
+        title: "Perfil | A&M Smart Hub",
+      },
+      {
+        path: "settings",
+        component: SettingsComponent,
+        title: "Configuración | A&M Smart Hub",
+      },
+      {
+        path: "support",
+        component: SupportComponent,
+        title: "Soporte | A&M Smart Hub",
       },
 
       /* === RUTAS DE LA PLANTILLA COMENTADAS ===

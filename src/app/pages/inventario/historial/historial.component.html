@@ -2,8 +2,8 @@
   
   <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
     <div>
-      <h2 class="text-xl font-bold text-gray-800 dark:text-white">Historial de Movimientos</h2>
-      <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Bitácora de auditoría inmutable del sistema.</p>
+      <h2 class="text-xl font-bold text-gray-800 dark:text-white">Auditoría de Inventario TI</h2>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Bitácora de cambios, entregas, devoluciones y acciones críticas del sistema.</p>
     </div>
     <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 text-gray-600 rounded-lg text-sm font-medium border border-gray-200 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -74,7 +74,7 @@
             } @empty {
               <tr>
                 <td colspan="5" class="px-5 py-8 text-center text-sm text-gray-500 dark:text-gray-400">
-                  El historial de movimientos está vacío.
+                  La auditoría todavía no tiene movimientos.
                 </td>
               </tr>
             }
@@ -87,7 +87,7 @@
           <p class="text-sm text-gray-500 dark:text-gray-400">
             Página <span class="font-medium text-gray-800 dark:text-gray-200">{{ currentPage() }}</span> de <span class="font-medium text-gray-800 dark:text-gray-200">{{ totalPages() || 1 }}</span>
             <span class="text-gray-300 dark:text-gray-600 mx-2">|</span>
-            Total de movimientos: <span class="font-medium text-brand-600 dark:text-brand-400">{{ historial().length }}</span>
+            Total de eventos auditados: <span class="font-medium text-brand-600 dark:text-brand-400">{{ historial().length }}</span>
           </p>
         </div>
         <div class="flex gap-2">

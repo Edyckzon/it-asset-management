@@ -132,6 +132,22 @@ export class EmpleadosComponent implements OnInit {
 
   async toggleEstado(emp: any) {
     const accionText = emp.estado ? "dar de baja" : "reactivar";
+    if (emp.estado) {
+      try {
+        const bloqueos = await this.rrhh.getBloqueosParaInactivarEmpleado(emp.id);
+        if (bloqueos.length) {
+          await this.confirm.confirm(
+            `No se puede dar de baja a ${emp.nombre_completo} todavía.\n\nPendientes:\n- ${bloqueos.join("\n- ")}\n\nFlujo correcto: devolución de equipos -> bloqueo AD/correo -> cierre de credenciales -> retiro de equipos -> baja RRHH.`,
+          );
+          return;
+        }
+      } catch (err) {
+        console.error("Error validando dependencias del empleado", err);
+        this.toast.error("No se pudo validar dependencias. No se hizo la baja.");
+        return;
+      }
+    }
+
     const ok = await this.confirm.confirmCritical(
       `Confirmas ${accionText} a ${emp.nombre_completo}? Este cambio afecta RRHH, asignaciones y reportes.`,
       emp.estado ? "Dar de baja empleado" : "Reactivar empleado",

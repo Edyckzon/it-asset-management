@@ -1,22 +1,34 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { PageBreadcrumbComponent } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
-import { UserMetaCardComponent } from '../../shared/components/user-profile/user-meta-card/user-meta-card.component';
-import { UserInfoCardComponent } from '../../shared/components/user-profile/user-info-card/user-info-card.component';
-import { UserAddressCardComponent } from '../../shared/components/user-profile/user-address-card/user-address-card.component';
+import { CommonModule } from "@angular/common";
+import { Component, OnInit, inject, signal } from "@angular/core";
+import { RouterModule } from "@angular/router";
+import { SupabaseService } from "../../shared/services/supabase.service";
 
 @Component({
-  selector: 'app-profile',
-  imports: [
-    CommonModule,
-    PageBreadcrumbComponent,
-    UserMetaCardComponent,
-    UserInfoCardComponent,
-    UserAddressCardComponent,
-  ],
-  templateUrl: './profile.component.html',
-  styles: ``
+  selector: "app-profile",
+  standalone: true,
+  imports: [CommonModule, RouterModule],
+  templateUrl: "./profile.component.html",
 })
-export class ProfileComponent {
+export class ProfileComponent implements OnInit {
+  private supabase = inject(SupabaseService);
 
+  user = signal<any>(null);
+  isLoading = signal(false);
+
+  async ngOnInit(): Promise<void> {
+    this.isLoading.set(true);
+    try {
+      this.user.set(await this.supabase.getUser());
+    } finally {
+      this.isLoading.set(false);
+    }
+  }
+
+  username() {
+    return (this.user()?.email || "usuario").split("@")[0];
+  }
+
+  initials() {
+    return this.username().slice(0, 2).toUpperCase();
+  }
 }

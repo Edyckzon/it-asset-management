@@ -49,10 +49,11 @@ export class AppSidebarComponent {
       icon: `<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M4.75 7C4.75 5.75736 5.75736 4.75 7 4.75H17C18.2426 4.75 19.25 5.75736 19.25 7V17C19.25 18.2426 18.2426 19.25 17 19.25H7C5.75736 19.25 4.75 18.2426 4.75 17V7ZM7 3.25C4.92893 3.25 3.25 4.92893 3.25 7V17C3.25 19.0711 4.92893 20.75 7 20.75H17C19.0711 20.75 20.75 19.0711 20.75 17V7C20.75 4.92893 19.0711 3.25 17 3.25H7Z" fill="currentColor"></path></svg>`,
       name: "Inventario TI",
       subItems: [
-        { name: "Compras Hardware", path: "/inventario/compras" },
-        { name: "Activos TI", path: "/inventario/activos" },
+        { name: "Resumen", path: "/inventario/resumen" },
+        { name: "Compras", path: "/inventario/compras" },
+        { name: "Activos", path: "/inventario/activos" },
         { name: "Asignaciones", path: "/inventario/asignaciones" },
-        { name: "Historial Mov.", path: "/inventario/historial" },
+        { name: "Auditoría", path: "/inventario/historial" },
       ],
     },
     {

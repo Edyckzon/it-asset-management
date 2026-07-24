@@ -20,6 +20,7 @@ export class EquiposComponent implements OnInit {
 
   equipos: any[] = [];
   empleados: any[] = [];
+  empleadosActivos: any[] = [];
   isLoading = false;
 
   // Modal Nuevo Equipo
@@ -38,12 +39,14 @@ export class EquiposComponent implements OnInit {
   async cargarDatos() {
     this.isLoading = true;
     try {
-      const [dataEquipos, dataEmpleados] = await Promise.all([
+      const [dataEquipos, dataEmpleados, dataEmpleadosActivos] = await Promise.all([
         this.equipoSvc.getEquipos(),
-        this.rrhhSvc.getEmpleados()
+        this.rrhhSvc.getEmpleados(),
+        this.rrhhSvc.getEmpleadosActivos()
       ]);
       
       this.empleados = dataEmpleados;
+      this.empleadosActivos = dataEmpleadosActivos;
       
       // Magia: Cruzamos los datos aquí para evitar errores de SQL
       this.equipos = dataEquipos.map(eq => {

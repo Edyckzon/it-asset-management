@@ -1,11 +1,68 @@
-<app-page-breadcrumb pageTitle="Profile" />
-<div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] lg:p-6">
-  <h3 class="mb-5 text-lg font-semibold text-gray-800 dark:text-white/90 lg:mb-7">
-    Profile
-  </h3>
-  <div class="space-y-6">
-    <div><app-user-meta-card/></div>
-    <div><app-user-info-card/></div>
-    <div><app-user-address-card/></div>
-  </div>
+<div class="max-w-6xl mx-auto p-4 space-y-5">
+  <section class="rounded-2xl border border-gray-200 bg-white p-5 shadow-theme-sm dark:border-gray-800 dark:bg-gray-900">
+    <div class="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+      <div class="flex items-center gap-4">
+        <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-brand-50 text-xl font-bold text-brand-600 dark:bg-brand-500/10 dark:text-brand-400">
+          {{ initials() }}
+        </div>
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-wide text-brand-500">Perfil de usuario</p>
+          <h1 class="text-2xl font-bold text-gray-900 dark:text-white">{{ username() }}</h1>
+          <p class="text-sm text-gray-500 dark:text-gray-400">{{ user()?.email || "Cargando usuario..." }}</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2 sm:flex">
+        <a routerLink="/settings" class="inline-flex h-10 items-center justify-center rounded-lg border border-gray-200 px-4 text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800">Configuración</a>
+        <a routerLink="/support" class="inline-flex h-10 items-center justify-center rounded-lg bg-brand-500 px-4 text-sm font-semibold text-white hover:bg-brand-600">Soporte</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="grid grid-cols-1 gap-5 lg:grid-cols-3">
+    <article class="rounded-xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-gray-900">
+      <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Identidad</h2>
+      <div class="mt-4 space-y-3 text-sm">
+        <div>
+          <p class="text-gray-500 dark:text-gray-400">Correo</p>
+          <p class="font-medium text-gray-900 dark:text-white">{{ user()?.email || "-" }}</p>
+        </div>
+        <div>
+          <p class="text-gray-500 dark:text-gray-400">ID Auth</p>
+          <p class="break-all font-mono text-xs text-gray-700 dark:text-gray-300">{{ user()?.id || "-" }}</p>
+        </div>
+        <div>
+          <p class="text-gray-500 dark:text-gray-400">Rol JWT</p>
+          <p class="font-medium text-gray-900 dark:text-white">{{ user()?.role || "authenticated" }}</p>
+        </div>
+      </div>
+    </article>
+
+    <article class="rounded-xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-gray-900">
+      <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Sesión</h2>
+      <div class="mt-4 space-y-3 text-sm">
+        <div>
+          <p class="text-gray-500 dark:text-gray-400">Creado</p>
+          <p class="font-medium text-gray-900 dark:text-white">{{ user()?.created_at | date: "dd/MM/yyyy HH:mm" }}</p>
+        </div>
+        <div>
+          <p class="text-gray-500 dark:text-gray-400">Último acceso</p>
+          <p class="font-medium text-gray-900 dark:text-white">{{ user()?.last_sign_in_at | date: "dd/MM/yyyy HH:mm" }}</p>
+        </div>
+        <div>
+          <p class="text-gray-500 dark:text-gray-400">Proveedor</p>
+          <p class="font-medium text-gray-900 dark:text-white">{{ user()?.app_metadata?.provider || "email" }}</p>
+        </div>
+      </div>
+    </article>
+
+    <article class="rounded-xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-gray-900">
+      <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Accesos rápidos</h2>
+      <div class="mt-4 grid gap-2">
+        <a routerLink="/inventario/resumen" class="rounded-lg border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800">Resumen Inventario TI</a>
+        <a routerLink="/rrhh/empleados" class="rounded-lg border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800">Empleados RRHH</a>
+        <a routerLink="/network/acusers" class="rounded-lg border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800">Active Directory</a>
+      </div>
+    </article>
+  </section>
 </div>

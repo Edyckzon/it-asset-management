@@ -10,6 +10,9 @@
 /node_modules
 npm-debug.log
 yarn-error.log
+pnpm-debug.log
+/.npm
+/.npm-cache
 
 # IDEs and editors
 .idea/
@@ -41,6 +44,34 @@ testem.log
 .DS_Store
 Thumbs.db
 
+# Local environments and secrets
+.env
+.env.*
+!.env.example
+*.local
+*.secret
+*.secrets
+*.pem
+*.key
+*.p8
+*.p12
+*.pfx
+*.crt
+*.cer
+*.jks
+*.keystore
 
-# Ocultar secretos de Angular
+# Angular environment files with real project keys
 src/environments/*
+!src/environments/environment.example.ts
+
+# Supabase local state and sensitive exports
+.supabase/
+/backups/
+/dumps/
+/exports/
+/reports/
+*.dump
+*.backup
+*.sql.gz
+*.tar.gz

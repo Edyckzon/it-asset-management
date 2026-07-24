@@ -92,7 +92,7 @@
         <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Líder del Equipo</label>
         <select [(ngModel)]="nuevoEquipo.lider_id" class="w-full rounded-lg border border-gray-300 bg-gray-50 py-2.5 px-4 text-gray-800 outline-none focus:border-brand-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white">
           <option value="">-- Seleccionar --</option>
-          @for (emp of empleados; track emp.id) { <option [value]="emp.id">{{ emp.nombre_completo }}</option> }
+          @for (emp of empleadosActivos; track emp.id) { <option [value]="emp.id">{{ emp.nombre_completo }}</option> }
         </select>
       </div>
       <div class="flex justify-end gap-3">
@@ -110,7 +110,7 @@
       <p class="mb-5 text-sm text-gray-500">Selecciona quiénes pertenecen a: <span class="font-bold text-brand-500">{{ equipoSeleccionado?.nombre_equipo }}</span></p>
       
       <div class="overflow-y-auto pr-2 flex-grow custom-scrollbar mb-6 space-y-2">
-        @for (emp of empleados; track emp.id) {
+        @for (emp of empleadosActivos; track emp.id) {
           @if (emp.id !== equipoSeleccionado?.lider_id) {
             <label class="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:bg-gray-50 cursor-pointer transition dark:border-gray-800 dark:hover:bg-gray-800/50"
                    [ngClass]="{'bg-brand-50 border-brand-200 dark:bg-brand-900/20 dark:border-brand-800': miembrosSeleccionados.includes(emp.id)}">

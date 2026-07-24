@@ -206,7 +206,7 @@ export class AcUsersComponent implements OnInit {
     this.isLoading.set(true);
     try {
       const [empleadosList, usuariosAdList] = await Promise.all([
-        this.rrhh.getEmpleados(),
+        this.rrhh.getEmpleadosActivos(),
         this.netSvc.getUsuariosAD(),
       ]);
       this.empleadosDisponibles.set(
